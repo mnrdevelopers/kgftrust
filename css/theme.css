@@ -1138,3 +1138,33 @@ footer {
     box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0);
   }
 }
+
+/* --- STYLISH HEADER DONATE BUTTON --- */
+.nav-btn-donate {
+  display: inline-block;
+  padding: 0.45rem 1.25rem;
+  border: 1.5px solid var(--gold);
+  border-radius: 50px;
+  color: var(--gold) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  text-align: center;
+}
+
+.nav-btn-donate:hover {
+  background: var(--gold-gradient);
+  color: #000 !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+.nav-btn-donate.active {
+  background: var(--gold-gradient);
+  color: #000 !important;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
