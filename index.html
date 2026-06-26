@@ -52,6 +52,8 @@
   <section class="hero-section">
     <!-- Ambient background glow behind the entire section -->
     <div class="hero-ambient-glow"></div>
+    <!-- Golden Animated Particle Canvas -->
+    <canvas id="hero-particles" class="hero-particles-canvas"></canvas>
     
     <div class="container hero-container">
       <!-- Left Column: Branding & Actions -->
@@ -465,11 +467,95 @@
           console.log("Error loading dynamic news, using static fallback.");
         }
       }
+    // Golden Animated Particle Background using Canvas
+    function initGoldParticles() {
+      const canvas = document.getElementById("hero-particles");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      
+      let particles = [];
+      const particleCount = 45; // optimized for performance
+      
+      function resizeCanvas() {
+        const parent = canvas.parentElement;
+        canvas.width = parent.offsetWidth;
+        canvas.height = parent.offsetHeight;
+      }
+      
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+      
+      class Particle {
+        constructor() {
+          this.reset();
+          // Randomly distribute initially
+          this.y = Math.random() * canvas.height;
+        }
+        
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = canvas.height + Math.random() * 20;
+          this.size = Math.random() * 2.2 + 0.4; // sizes between 0.4px and 2.6px
+          this.speedY = -(Math.random() * 0.7 + 0.15); // upward floating
+          this.speedX = Math.random() * 0.3 - 0.15; // slight horizontal breeze
+          this.opacity = Math.random() * 0.5 + 0.25; // initial opacity
+          this.fadeSpeed = Math.random() * 0.003 + 0.0015;
+          this.wobble = Math.random() * Math.PI * 2;
+          this.wobbleSpeed = Math.random() * 0.015 + 0.005;
+        }
+        
+        update() {
+          this.y += this.speedY;
+          this.wobble += this.wobbleSpeed;
+          this.x += this.speedX + Math.sin(this.wobble) * 0.12;
+          
+          // Fade out as it floats to the upper 30% of the canvas
+          if (this.y < canvas.height * 0.4) {
+            this.opacity -= this.fadeSpeed;
+          }
+          
+          if (this.y < 0 || this.opacity <= 0 || this.x < 0 || this.x > canvas.width) {
+            this.reset();
+          }
+        }
+        
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          
+          // Deluxe gold color palettes matching the theme
+          ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+          ctx.shadowBlur = this.size * 2.5;
+          ctx.shadowColor = "rgba(212, 175, 55, 0.5)";
+          ctx.fill();
+        }
+      }
+      
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Disable shadowBlur on context to keep rendering loop lightweight
+        ctx.shadowBlur = 0;
+        
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
     }
 
     window.addEventListener("load", () => {
       loadRealtimeStats();
       loadLatestNews();
+      initGoldParticles();
     });
   </script>
 </body>
