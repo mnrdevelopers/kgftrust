@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Gallery | KGF Trust</title>
+  <meta name="description" content="View images and video galleries of KGF Trust's humanitarian and development activities.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Gallery grid specific styles */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .gallery-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      background: var(--bg-secondary);
+      transition: var(--transition-smooth);
+    }
+    
+    .gallery-item img, .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition-smooth);
+    }
+
+    .gallery-item:hover {
+      border-color: var(--gold);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-badge {
+      align-self: flex-start;
+      margin-bottom: 0.5rem;
+    }
+
+    .gallery-caption {
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .play-icon-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: var(--gold-gradient);
+      color: #000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(212,175,55,0.4);
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- BANNER --- -->
+  <section class="section-padding" style="background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200&auto=format&fit=crop'); background-size: cover; background-position: center; padding-top: 150px; padding-bottom: 70px; text-align: center; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase;">Media Gallery</h1>
+      <p class="subtitle text-center" style="margin-bottom: 0;">Captured moments of grit, charity, and transformation.</p>
+    </div>
+  </section>
+
+  <!-- --- GALLERY COMPONENT --- -->
+  <section class="section-padding">
+    <div class="container">
+      <!-- Filters -->
+      <div class="tabs-nav" id="gallery-filters">
+        <button class="tab-btn active" onclick="filterGallery('all')">All Media</button>
+        <button class="tab-btn" onclick="filterGallery('image')">Images</button>
+        <button class="tab-btn" onclick="filterGallery('video')">Videos</button>
+        <button class="tab-btn" onclick="filterGallery('education')">Education</button>
+        <button class="tab-btn" onclick="filterGallery('sports')">Sports</button>
+        <button class="tab-btn" onclick="filterGallery('selfdefence')">Self Defence</button>
+        <button class="tab-btn" onclick="filterGallery('health')">Health</button>
+        <button class="tab-btn" onclick="filterGallery('food')">Food Distribution</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="gallery-grid" id="gallery-items-grid">
+        <!-- Default Fallback items -->
+        <div class="gallery-item" data-type="image" data-cat="food" onclick="openLightbox('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800', 'Weekly hot meal distribution camp')">
+          <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=400" alt="Meal distribution">
+          <div class="gallery-overlay">
+            <span class="badge badge-success gallery-badge">Food Distribution</span>
+            <div class="gallery-caption">Weekly hot meal distribution camp</div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-type="image" data-cat="education" onclick="openLightbox('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800', 'Distribution of school kits to village kids')">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=400" alt="School kits">
+          <div class="gallery-overlay">
+            <span class="badge badge-success gallery-badge">Education</span>
+            <div class="gallery-caption">Distribution of school kits to village kids</div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-type="image" data-cat="sports" onclick="openLightbox('https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800', 'Sponsoring kits for state athletic trials')">
+          <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=400" alt="Athletic training">
+          <div class="gallery-overlay">
+            <span class="badge badge-success gallery-badge">Sports</span>
+            <div class="gallery-caption">Sponsoring kits for state athletic trials</div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-type="image" data-cat="health" onclick="openLightbox('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800', 'Diagnostic health and spec checking clinic')">
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=400" alt="Medical Camp">
+          <div class="gallery-overlay">
+            <span class="badge badge-success gallery-badge">Health</span>
+            <div class="gallery-caption">Diagnostic health and spec checking clinic</div>
+          </div>
+        </div>
+
+        <!-- Video Item -->
+        <div class="gallery-item" data-type="video" data-cat="education" onclick="openVideoLightbox('https://www.w3schools.com/html/mov_bbb.mp4', 'Overview video of Rural Education Centers')">
+          <div class="play-icon-overlay"><i data-lucide="play" style="width: 24px; height: 24px; fill: #000;"></i></div>
+          <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=400" alt="Video cover">
+          <div class="gallery-overlay">
+            <span class="badge badge-success gallery-badge">Education</span>
+            <div class="gallery-caption">Overview video of Rural Education Centers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- LIGHTBOX MODAL --- -->
+  <div class="modal" id="lightbox-modal">
+    <button class="modal-close" onclick="closeLightbox()">&times;</button>
+    <div class="modal-content" style="max-width: 900px; padding: 0.5rem; background: #000; border-color: #222;">
+      <div id="lightbox-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <!-- Filled dynamically -->
+      </div>
+      <div id="lightbox-caption" style="color: #fff; text-align: center; padding: 1rem 0; font-weight: 500;"></div>
+    </div>
+  </div>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="margin-bottom: 1.2rem;">
+            <img src="images/logo.png" alt="KGF Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold); margin-right: 8px;">
+            <span>KGF Trust</span>
+          </a>
+          <p class="footer-about">
+            Kalki Grit Force Trust is a registered charity dedicated to rural development, health camps, sports talent sponsorship, and food security.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+            <p><strong>REG No:</strong> REG/2024/TRUST/12345</p>
+            <p><strong>80G No:</strong> DIT(E)/2024/1234</p>
+            <p><strong>PAN:</strong> AAACT1234C</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Trust</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="gallery.html">Media Gallery</a></li>
+            <li><a href="events.html">Events & News</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contribute</h3>
+          <ul class="footer-links">
+            <li><a href="donate.html">Donate Funds</a></li>
+            <li><a href="volunteer.html">Volunteer Registration</a></li>
+            <li><a href="membership.html">Trust Membership</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact Office</h3>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+            <span>Sector 4, Main Hub, New Delhi, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+            <span>+91 77777 77777</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            <span>support@kgftrust.org</span>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="twitter" style="width: 18px; height: 18px;"></i></a>
+            <a href="https://wa.me/917777777777" target="_blank" class="social-btn"><i data-lucide="phone-call" style="width: 18px; height: 18px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kalki Grit Force Trust. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    let localGalleryItems = [];
+
+    // Filter gallery entries in UI
+    function filterGallery(filter) {
+      // Manage active tab state
+      const btns = document.querySelectorAll("#gallery-filters .tab-btn");
+      btns.forEach(btn => {
+        btn.classList.remove("active");
+        if (btn.getAttribute("onclick").includes(`'${filter}'`)) {
+          btn.classList.add("active");
+        }
+      });
+
+      const cards = document.querySelectorAll(".gallery-item");
+      cards.forEach(card => {
+        const type = card.getAttribute("data-type");
+        const cat = card.getAttribute("data-cat");
+        
+        if (filter === "all") {
+          card.style.display = "block";
+        } else if (filter === "image" || filter === "video") {
+          card.style.display = type === filter ? "block" : "none";
+        } else {
+          card.style.display = cat === filter ? "block" : "none";
+        }
+      });
+    }
+
+    // Lightbox Control
+    function openLightbox(imgUrl, caption) {
+      const modal = document.getElementById("lightbox-modal");
+      const body = document.getElementById("lightbox-body");
+      const capt = document.getElementById("lightbox-caption");
+      
+      body.innerHTML = `<img src="${imgUrl}" style="max-width: 100%; max-height: 70vh; object-fit: contain; display: block; margin: auto;">`;
+      capt.innerText = caption || "";
+      modal.classList.add("active");
+    }
+
+    function openVideoLightbox(videoUrl, caption) {
+      const modal = document.getElementById("lightbox-modal");
+      const body = document.getElementById("lightbox-body");
+      const capt = document.getElementById("lightbox-caption");
+      
+      body.innerHTML = `
+        <video controls autoplay style="max-width: 100%; max-height: 70vh; display: block; margin: auto;">
+          <source src="${videoUrl}" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+      `;
+      capt.innerText = caption || "";
+      modal.classList.add("active");
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById("lightbox-modal");
+      const body = document.getElementById("lightbox-body");
+      body.innerHTML = ""; // clean media
+      modal.classList.remove("active");
+    }
+
+    // Fetch dynamic database images from Supabase
+    async function loadDynamicGallery() {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: dbItems } = await supabaseClient
+            .from('gallery')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (dbItems && dbItems.length > 0) {
+            const grid = document.getElementById("gallery-items-grid");
+            
+            // Build dynamic items
+            const html = dbItems.map(item => {
+              if (item.type === 'video') {
+                return `
+                  <div class="gallery-item" data-type="video" data-cat="${item.category}" onclick="openVideoLightbox('${item.url}', '${item.caption || ''}')">
+                    <div class="play-icon-overlay"><i data-lucide="play" style="width: 24px; height: 24px; fill: #000;"></i></div>
+                    <div style="background: #222; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                      <i data-lucide="video" class="text-gold" style="width: 48px; height: 48px;"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                      <span class="badge badge-success gallery-badge">${item.category}</span>
+                      <div class="gallery-caption">${item.caption || 'Video Log'}</div>
+                    </div>
+                  </div>
+                `;
+              } else {
+                return `
+                  <div class="gallery-item" data-type="image" data-cat="${item.category}" onclick="openLightbox('${item.url}', '${item.caption || ''}')">
+                    <img src="${item.url}" alt="${item.caption || 'Media'}" loading="lazy">
+                    <div class="gallery-overlay">
+                      <span class="badge badge-success gallery-badge">${item.category}</span>
+                      <div class="gallery-caption">${item.caption || 'Media Photo'}</div>
+                    </div>
+                  </div>
+                `;
+              }
+            }).join("");
+
+            // Append to default fallbacks
+            grid.innerHTML = grid.innerHTML + html;
+            if (typeof lucide !== "undefined") lucide.createIcons();
+          }
+        } catch (e) {
+          console.log("Failed loading database gallery:", e);
+        }
+      }
+    }
+
+    window.addEventListener("load", loadDynamicGallery);
+  </script>
+</body>
+</html>

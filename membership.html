@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Member | KGF Trust</title>
+  <meta name="description" content="Apply for KGF Trust membership. Join as an Annual or Life member, get your unique Member ID, and contribute to decisions.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- BANNER --- -->
+  <section class="section-padding" style="background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1521737711867-e3b904787a3a?q=80&w=1200&auto=format&fit=crop'); background-size: cover; background-position: center; padding-top: 150px; padding-bottom: 70px; text-align: center; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase;">Become a Member</h1>
+      <p class="subtitle text-center" style="margin-bottom: 0;">Acquire voting rights, advisory privileges, and permanent partnership status.</p>
+    </div>
+  </section>
+
+  <!-- --- MEMBERSHIP REGISTRATION FORM --- -->
+  <section class="section-padding">
+    <div class="container" style="max-width: 800px;">
+      <div class="card glass-card">
+        <div style="text-align: center; margin-bottom: 2.5rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 1.5rem;">
+          <h2 class="text-gold" style="font-size: 1.6rem; margin-bottom: 0.5rem;">Membership Registration</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Submit your personal details to acquire a verified Member ID card.</p>
+        </div>
+
+        <form id="membership-reg-form" onsubmit="handleMembershipSignup(event)">
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label class="form-label" for="m-name">Full Name</label>
+              <input type="text" id="m-name" class="form-control" placeholder="Enter full name" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="m-mobile">Mobile Number</label>
+              <input type="tel" id="m-mobile" class="form-control" placeholder="10-digit number" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label class="form-label" for="m-email">Email Address</label>
+              <input type="email" id="m-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="m-aadhaar">Aadhaar Card Number</label>
+              <input type="text" id="m-aadhaar" class="form-control" placeholder="12-digit Aadhaar" pattern="[0-9]{12}" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="m-type">Membership Plan Type</label>
+            <select id="m-type" class="form-control" required>
+              <option value="" disabled selected>Select plan type</option>
+              <option value="Annual">Annual Membership (₹1,000 / year)</option>
+              <option value="Life">Life Membership (₹10,000 / permanent)</option>
+              <option value="Honorary">Honorary Membership (Invitee Only)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="m-address">Residential Address</label>
+            <textarea id="m-address" class="form-control" placeholder="Full residential address" style="min-height: 80px;" required></textarea>
+          </div>
+
+          <!-- Photo upload wrapper styled beautifully -->
+          <div class="form-group" style="margin-top: 1rem; margin-bottom: 2rem;">
+            <label class="form-label">Upload Profile Photograph</label>
+            <div class="file-upload-wrapper">
+              <i data-lucide="image" class="file-upload-icon"></i>
+              <h4 style="margin-bottom: 0.25rem;" id="upload-label">Drag & drop profile picture, or click to browse</h4>
+              <p style="color: var(--text-muted); font-size: 0.8rem;">Formats allowed: JPG, PNG. Max size 2MB.</p>
+              <input type="file" id="m-photo" accept="image/*" required onchange="handleFileSelected(event)">
+            </div>
+            <!-- Preview selected photo -->
+            <div id="photo-preview-box" style="display: none; margin-top: 1.5rem; text-align: center;">
+              <img id="photo-preview-img" src="#" style="max-height: 120px; border-radius: 4px; border: 1px solid var(--border-color); display: inline-block;">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" id="submit-btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+            <i data-lucide="shield-check"></i> Submit Membership Registration
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="margin-bottom: 1.2rem;">
+            <img src="images/logo.png" alt="KGF Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold); margin-right: 8px;">
+            <span>KGF Trust</span>
+          </a>
+          <p class="footer-about">
+            Kalki Grit Force Trust is a registered charity dedicated to rural development, health camps, sports talent sponsorship, and food security.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+            <p><strong>REG No:</strong> REG/2024/TRUST/12345</p>
+            <p><strong>80G No:</strong> DIT(E)/2024/1234</p>
+            <p><strong>PAN:</strong> AAACT1234C</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Trust</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="gallery.html">Media Gallery</a></li>
+            <li><a href="events.html">Events & News</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contribute</h3>
+          <ul class="footer-links">
+            <li><a href="donate.html">Donate Funds</a></li>
+            <li><a href="volunteer.html">Volunteer Registration</a></li>
+            <li><a href="membership.html">Trust Membership</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact Office</h3>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+            <span>Sector 4, Main Hub, New Delhi, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+            <span>+91 77777 77777</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            <span>support@kgftrust.org</span>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="twitter" style="width: 18px; height: 18px;"></i></a>
+            <a href="https://wa.me/917777777777" target="_blank" class="social-btn"><i data-lucide="phone-call" style="width: 18px; height: 18px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kalki Grit Force Trust. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    // Prefill user details if logged in
+    window.addEventListener("load", async () => {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session && session.user) {
+          const { data: profile } = await supabaseClient
+            .from('users')
+            .select('full_name, email, phone')
+            .eq('id', session.user.id)
+            .single();
+
+          if (profile) {
+            if (profile.full_name) document.getElementById("m-name").value = profile.full_name;
+            if (profile.email) document.getElementById("m-email").value = profile.email;
+            if (profile.phone) document.getElementById("m-mobile").value = profile.phone;
+          }
+        }
+      }
+    });
+
+    // File selection photo preview handler
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById("upload-label").innerText = `File Selected: ${file.name}`;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const previewBox = document.getElementById("photo-preview-box");
+          const previewImg = document.getElementById("photo-preview-img");
+          previewImg.src = e.target.result;
+          previewBox.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Submit Membership handler
+    async function handleMembershipSignup(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader" class="spin"></i> Creating membership record...`;
+      if (typeof lucide !== "undefined") lucide.createIcons();
+
+      const name = document.getElementById("m-name").value;
+      const email = document.getElementById("m-email").value;
+      const mobile = document.getElementById("m-mobile").value;
+      const aadhaar = document.getElementById("m-aadhaar").value;
+      const mPlan = document.getElementById("m-type").value;
+      const address = document.getElementById("m-address").value;
+      const photoFile = document.getElementById("m-photo").files[0];
+
+      let userId = null;
+      let photoUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200"; // fallback
+
+      // Generate a unique Member ID
+      const generatedMemberId = window.generateUniqueMemberID();
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (session && session.user) userId = session.user.id;
+
+          // 1. Upload photo to Supabase storage bucket 'members'
+          if (photoFile) {
+            const fileExt = photoFile.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            let { error: uploadError } = await supabaseClient.storage
+              .from('members')
+              .upload(filePath, photoFile);
+
+            if (uploadError) {
+              showToast("Photo upload failed: " + uploadError.message, "error");
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = `<i data-lucide="shield-check"></i> Submit Membership Registration`;
+              lucide.createIcons();
+              return;
+            }
+
+            // Get public URL
+            const { data: { publicUrl } } = supabaseClient.storage
+              .from('members')
+              .getPublicUrl(filePath);
+            
+            photoUrl = publicUrl;
+          }
+
+          // 2. Insert record into members table
+          const { error: insertError } = await supabaseClient
+            .from('members')
+            .insert({
+              user_id: userId,
+              member_id: generatedMemberId,
+              full_name: name,
+              email: email,
+              mobile: mobile,
+              address: address,
+              aadhaar: aadhaar,
+              membership_type: mPlan,
+              photo_url: photoUrl,
+              status: 'pending' // default
+            });
+
+          if (insertError) {
+            showToast("Database insertion failed: " + insertError.message, "error");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i data-lucide="shield-check"></i> Submit Membership Registration`;
+            lucide.createIcons();
+            return;
+          }
+
+          showToast(`Registration Successful! Generated ID: ${generatedMemberId}`, "success");
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 2000);
+
+        } catch (err) {
+          showToast("Network error: " + err.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="shield-check"></i> Submit Membership Registration`;
+          lucide.createIcons();
+        }
+      } else {
+        // Offline / mock success
+        showToast(`Registration Successful! (Demo ID: ${generatedMemberId})`, "success");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>

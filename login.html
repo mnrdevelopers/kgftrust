@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" antifriction="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Sign Up | KGF Trust</title>
+  <meta name="description" content="Secure portal to sign in or register for an account with Kalki Grit Force Trust.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- AUTHENTICATION CARDS --- -->
+  <section class="section-padding" style="padding-top: 150px; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%);">
+    <div class="container" style="max-width: 480px;">
+      <div class="card glass-card" style="padding: 3rem 2.5rem;">
+        
+        <!-- Toggle Tabs -->
+        <div class="tabs-nav" style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+          <button class="tab-btn active" id="tab-login" onclick="toggleAuthTab('login')" style="flex: 1;">Login</button>
+          <button class="tab-btn" id="tab-signup" onclick="toggleAuthTab('signup')" style="flex: 1;">Sign Up</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div id="auth-login-panel">
+          <form onsubmit="handleLoginSubmit(event)">
+            <div class="form-group">
+              <label class="form-label" for="login-email">Email Address</label>
+              <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <label class="form-label" for="login-password" style="margin-bottom: 0;">Password</label>
+                <a href="#" onclick="toggleAuthTab('reset')" style="font-size: 0.75rem; color: var(--gold);">Forgot Password?</a>
+              </div>
+              <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" id="login-submit" class="btn btn-primary btn-full" style="margin-top: 1rem; padding: 0.9rem;">
+              Sign In
+            </button>
+          </form>
+        </div>
+
+        <!-- SIGN UP FORM -->
+        <div id="auth-signup-panel" style="display: none;">
+          <form onsubmit="handleSignupSubmit(event)">
+            <div class="form-group">
+              <label class="form-label" for="signup-name">Full Name</label>
+              <input type="text" id="signup-name" class="form-control" placeholder="Your Full Name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-email">Email Address</label>
+              <input type="email" id="signup-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-password">Password (min 6 characters)</label>
+              <input type="password" id="signup-password" class="form-control" placeholder="Create password" minlength="6" required>
+            </div>
+            <button type="submit" id="signup-submit" class="btn btn-primary btn-full" style="margin-top: 1rem; padding: 0.9rem;">
+              Create Account
+            </button>
+          </form>
+        </div>
+
+        <!-- FORGOT PASSWORD FORM -->
+        <div id="auth-reset-panel" style="display: none;">
+          <h3 style="margin-bottom: 0.5rem;">Reset Password</h3>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">Enter your email to receive a password recovery link.</p>
+          
+          <form onsubmit="handlePasswordRecovery(event)">
+            <div class="form-group">
+              <label class="form-label" for="recovery-email">Email Address</label>
+              <input type="email" id="recovery-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <button type="submit" id="recovery-submit" class="btn btn-primary btn-full" style="margin-top: 1rem; padding: 0.9rem;">
+              Send Recovery Email
+            </button>
+            <button type="button" onclick="toggleAuthTab('login')" class="btn btn-outline btn-full" style="margin-top: 0.75rem; padding: 0.8rem;">
+              Back to Login
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    // Tab Toggling
+    function toggleAuthTab(tab) {
+      const loginTab = document.getElementById("tab-login");
+      const signupTab = document.getElementById("tab-signup");
+      
+      const loginPanel = document.getElementById("auth-login-panel");
+      const signupPanel = document.getElementById("auth-signup-panel");
+      const resetPanel = document.getElementById("auth-reset-panel");
+
+      if (tab === 'login') {
+        loginTab.classList.add("active");
+        signupTab.classList.remove("active");
+        loginPanel.style.display = "block";
+        signupPanel.style.display = "none";
+        resetPanel.style.display = "none";
+      } else if (tab === 'signup') {
+        loginTab.classList.remove("active");
+        signupTab.classList.add("active");
+        loginPanel.style.display = "none";
+        signupPanel.style.display = "block";
+        resetPanel.style.display = "none";
+      } else if (tab === 'reset') {
+        loginTab.classList.remove("active");
+        signupTab.classList.remove("active");
+        loginPanel.style.display = "none";
+        signupPanel.style.display = "none";
+        resetPanel.style.display = "block";
+      }
+    }
+
+    // Login Submission
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById("login-submit");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Signing in...";
+
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) {
+            showToast(error.message, "error");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Sign In";
+            return;
+          }
+
+          showToast("Login successful!", "success");
+          localStorage.setItem("kgf_session", JSON.stringify(data.session));
+          
+          // Check role to redirect to admin or dashboard
+          const { data: profile } = await supabaseClient
+            .from('users')
+            .select('role')
+            .eq('id', data.user.id)
+            .single();
+
+          setTimeout(() => {
+            if (profile && profile.role === 'admin') {
+              window.location.href = "admin.html";
+            } else {
+              window.location.href = "dashboard.html";
+            }
+          }, 1000);
+
+        } catch (err) {
+          showToast("Network connection error: " + err.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Sign In";
+        }
+      } else {
+        // Mock Session
+        showToast("Logged in successfully (Demo Mode)!", "success");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
+      }
+    }
+
+    // Signup Submission
+    async function handleSignupSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById("signup-submit");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Creating account...";
+
+      const name = document.getElementById("signup-name").value;
+      const email = document.getElementById("signup-email").value;
+      const password = document.getElementById("signup-password").value;
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                full_name: name,
+                role: 'user' // Default role
+              }
+            }
+          });
+
+          if (error) {
+            showToast(error.message, "error");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Create Account";
+            return;
+          }
+
+          showToast("Registration successful! Redirecting...", "success");
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 1500);
+
+        } catch (err) {
+          showToast("Network error: " + err.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Create Account";
+        }
+      } else {
+        showToast("Account created successfully (Demo Mode)!", "success");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1500);
+      }
+    }
+
+    // Password Recovery Submission
+    async function handlePasswordRecovery(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById("recovery-submit");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Sending...";
+
+      const email = document.getElementById("recovery-email").value;
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/login.html',
+          });
+
+          if (error) {
+            showToast(error.message, "error");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Send Recovery Email";
+            return;
+          }
+
+          showToast("Recovery link dispatched to your inbox.", "success");
+          document.getElementById("recovery-email").value = "";
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Send Recovery Email";
+          toggleAuthTab('login');
+
+        } catch (err) {
+          showToast("Network error: " + err.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Send Recovery Email";
+        }
+      } else {
+        showToast("Recovery email dispatched (Demo Mode)!", "success");
+        toggleAuthTab('login');
+      }
+    }
+  </script>
+</body>
+</html>

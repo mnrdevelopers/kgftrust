@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | KGF Trust</title>
+  <meta name="description" content="Reach out to Kalki Grit Force Trust. Contact our office via phone, email, WhatsApp, or drop a message via our inquiry form.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-premium);
+    }
+    .info-link-item {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .info-link-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .info-icon-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gold-glow);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .map-container {
+      width: 100%;
+      height: 380px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link active">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- BANNER --- -->
+  <section class="section-padding" style="background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1423666639041-f56000c29a9a?q=80&w=1200&auto=format&fit=crop'); background-size: cover; background-position: center; padding-top: 150px; padding-bottom: 70px; text-align: center; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase;">Contact Office</h1>
+      <p class="subtitle text-center" style="margin-bottom: 0;">Get in touch for inquiries, donations, collaborations or support requests.</p>
+    </div>
+  </section>
+
+  <!-- --- CONTACT DETAILS & FORM --- -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="contact-grid">
+        
+        <!-- Left Column: Contact Cards -->
+        <div class="contact-info-card">
+          <h2 style="font-size: 1.4rem; margin-bottom: 2rem; color: var(--text-primary);">Reach Out Directly</h2>
+          
+          <div class="info-link-item">
+            <div class="info-icon-box">
+              <i data-lucide="phone"></i>
+            </div>
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Phone Hotline</h4>
+              <p style="font-weight: 600; font-size: 1.05rem; margin-top: 0.2rem;"><a href="tel:+917777777777">+91 77777 77777</a></p>
+            </div>
+          </div>
+
+          <div class="info-link-item">
+            <div class="info-icon-box" style="background: rgba(37, 211, 102, 0.1); color: #25D366;">
+              <i data-lucide="phone-call"></i>
+            </div>
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">WhatsApp chat</h4>
+              <p style="font-weight: 600; font-size: 1.05rem; margin-top: 0.2rem;"><a href="https://wa.me/917777777777" target="_blank" style="color: #25D366;">+91 77777 77777</a></p>
+            </div>
+          </div>
+
+          <div class="info-link-item">
+            <div class="info-icon-box">
+              <i data-lucide="mail"></i>
+            </div>
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Email Support</h4>
+              <p style="font-weight: 600; font-size: 1.05rem; margin-top: 0.2rem;"><a href="mailto:support@kgftrust.org">support@kgftrust.org</a></p>
+            </div>
+          </div>
+
+          <div class="info-link-item">
+            <div class="info-icon-box">
+              <i data-lucide="map-pin"></i>
+            </div>
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Headquarters Address</h4>
+              <p style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-secondary);">Sector 4, Main Hub, New Delhi, India</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Form -->
+        <div class="card glass-card">
+          <h2 style="font-size: 1.4rem; margin-bottom: 1.5rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">Send a Message</h2>
+          
+          <form id="contact-inquiry-form" onsubmit="handleContactSubmit(event)">
+            <div class="form-group">
+              <label class="form-label" for="c-name">Full Name</label>
+              <input type="text" id="c-name" class="form-control" placeholder="Enter your name" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              <div class="form-group">
+                <label class="form-label" for="c-email">Email Address</label>
+                <input type="email" id="c-email" class="form-control" placeholder="name@example.com" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="c-phone">Phone Number</label>
+                <input type="tel" id="c-phone" class="form-control" placeholder="10-digit number" pattern="[0-9]{10}" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="c-message">Your Message</label>
+              <textarea id="c-message" class="form-control" placeholder="Enter your detailed inquiry or support request" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="submit-btn" style="padding: 0.9rem 2rem; margin-top: 1rem;">
+              <i data-lucide="send"></i> Send Inquiry Message
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Embedded Google Map -->
+      <div class="map-container">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13!1d14008.283832876678!2d77.2144358!3d28.612912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5d34000001%3A0xf6782ff77dfa81e3!2sIndia%20Gate!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+          width="100%" 
+          height="100%" 
+          style="border:0; filter: grayscale(1) invert(0.9) contrast(1.2);" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="margin-bottom: 1.2rem;">
+            <img src="images/logo.png" alt="KGF Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold); margin-right: 8px;">
+            <span>KGF Trust</span>
+          </a>
+          <p class="footer-about">
+            Kalki Grit Force Trust is a registered charity dedicated to rural development, health camps, sports talent sponsorship, and food security.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+            <p><strong>REG No:</strong> REG/2024/TRUST/12345</p>
+            <p><strong>80G No:</strong> DIT(E)/2024/1234</p>
+            <p><strong>PAN:</strong> AAACT1234C</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Trust</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="gallery.html">Media Gallery</a></li>
+            <li><a href="events.html">Events & News</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contribute</h3>
+          <ul class="footer-links">
+            <li><a href="donate.html">Donate Funds</a></li>
+            <li><a href="volunteer.html">Volunteer Registration</a></li>
+            <li><a href="membership.html">Trust Membership</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact Office</h3>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+            <span>Sector 4, Main Hub, New Delhi, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+            <span>+91 77777 77777</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            <span>support@kgftrust.org</span>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="twitter" style="width: 18px; height: 18px;"></i></a>
+            <a href="https://wa.me/917777777777" target="_blank" class="social-btn"><i data-lucide="phone-call" style="width: 18px; height: 18px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kalki Grit Force Trust. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    // Handle submission to Supabase contact_messages table
+    async function handleContactSubmit(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader" class="spin"></i> Sending message...`;
+      if (typeof lucide !== "undefined") lucide.createIcons();
+
+      const name = document.getElementById("c-name").value;
+      const email = document.getElementById("c-email").value;
+      const phone = document.getElementById("c-phone").value;
+      const message = document.getElementById("c-message").value;
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { error } = await supabaseClient
+            .from('contact_messages')
+            .insert({
+              name,
+              email,
+              phone,
+              message
+            });
+
+          if (error) {
+            showToast("Inquiry submission failed: " + error.message, "error");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i data-lucide="send"></i> Send Inquiry Message`;
+            lucide.createIcons();
+            return;
+          }
+
+          showToast("Message sent successfully! We will get back to you shortly.", "success");
+          document.getElementById("contact-inquiry-form").reset();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="send"></i> Send Inquiry Message`;
+          if (typeof lucide !== "undefined") lucide.createIcons();
+
+        } catch (err) {
+          showToast("Network error: " + err.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="send"></i> Send Inquiry Message`;
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        }
+      } else {
+        // Offline / mock success
+        showToast("Message sent successfully (Demo Mode)!", "success");
+        document.getElementById("contact-inquiry-form").reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i data-lucide="send"></i> Send Inquiry Message`;
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+</html>

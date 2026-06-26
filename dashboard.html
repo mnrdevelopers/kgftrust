@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard | KGF Trust</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Profile ID Card Premium Styling */
+    .id-card {
+      width: 100%;
+      max-width: 380px;
+      height: 230px;
+      background: radial-gradient(circle at top right, #1E1E1E 0%, #0A0A0A 100%);
+      border: 1px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #fff;
+    }
+    .id-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 80%);
+      pointer-events: none;
+    }
+    .id-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding-bottom: 0.75rem;
+    }
+    .id-card-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+    .id-card-body {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .id-card-photo {
+      width: 80px;
+      height: 95px;
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #111;
+    }
+    .id-card-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .id-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+    }
+    .id-card-info h4 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+    .id-card-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 0.5rem;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-secondary);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    th {
+      background-color: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- DASHBOARD CORE --- -->
+  <section class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div style="text-align: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 1.5rem;">
+        <h3 id="sidebar-user-name" style="margin-bottom: 0.25rem; font-size: 1.2rem;">-</h3>
+        <span id="sidebar-user-email" style="font-size: 0.8rem; color: var(--text-muted);">email@example.com</span>
+      </div>
+
+      <ul class="dashboard-sidebar-menu">
+        <li><a href="#" class="dashboard-menu-link active" onclick="switchDashboardTab('overview')"><i data-lucide="layout-dashboard"></i> Overview</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchDashboardTab('profile')"><i data-lucide="user-cog"></i> Update Profile</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchDashboardTab('membership')"><i data-lucide="award"></i> Membership Card</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchDashboardTab('volunteer')"><i data-lucide="users"></i> Volunteer Status</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchDashboardTab('donations')"><i data-lucide="history"></i> Donation History</a></li>
+      </ul>
+      
+      <button onclick="handleLogout()" class="btn btn-outline btn-full btn-sm" style="margin-top: auto;"><i data-lucide="log-out"></i> Log Out</button>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="dashboard-main">
+      
+      <!-- HEADER -->
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">Welcome back, <span id="header-user-firstname">-</span>!</h1>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Manage your status, donations, and credentials.</p>
+        </div>
+        <span class="badge badge-success" id="role-badge">User</span>
+      </div>
+
+      <!-- OVERVIEW PANEL -->
+      <div id="panel-overview" class="dashboard-panel">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+          <div class="card" style="border-left: 4px solid var(--gold);">
+            <h4 style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.5rem;">Membership</h4>
+            <div id="stat-mem-status" style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">Checking...</div>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--gold);">
+            <h4 style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.5rem;">Volunteer Force</h4>
+            <div id="stat-vol-status" style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">Checking...</div>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--gold);">
+            <h4 style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.5rem;">Total Contributed</h4>
+            <div id="stat-total-donations" style="font-size: 1.5rem; font-weight: 700; color: var(--success);">₹0</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem;">
+          <!-- Latest Activity Info -->
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Recent Bulletins</h3>
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <h4 style="color: var(--gold); margin-bottom: 0.5rem;">Upcoming Volunteers Briefing</h4>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">A briefing session for the Monsoon Blood Drive is scheduled next Saturday. Check your email for details.</p>
+            </div>
+            <div class="card">
+              <h4 style="color: var(--gold); margin-bottom: 0.5rem;">Digital Receipts</h4>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Tax exemption certificates for financial year 2026 can be downloaded under the Donation History panel.</p>
+            </div>
+          </div>
+
+          <!-- Digital ID Preview Quick -->
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Your Membership ID</h3>
+            <div id="quick-id-container">
+              <!-- Rendered Card -->
+              <div style="color: var(--text-muted); padding: 2rem; border: 1px dashed var(--border-color); border-radius: 8px; text-align: center;">
+                No active approved membership found.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE PANEL -->
+      <div id="panel-profile" class="dashboard-panel" style="display: none;">
+        <div class="card glass-card" style="max-width: 600px;">
+          <h3 style="margin-bottom: 1.5rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">Edit Profile Information</h3>
+          
+          <form id="profile-update-form" onsubmit="updateUserProfile(event)">
+            <div class="form-group">
+              <label class="form-label" for="p-email">Email Address (Non-editable)</label>
+              <input type="email" id="p-email" class="form-control" disabled style="background: var(--bg-tertiary); opacity: 0.6;">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="p-name">Full Name</label>
+              <input type="text" id="p-name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="p-phone">Phone Number</label>
+              <input type="tel" id="p-phone" class="form-control" placeholder="10-digit number" pattern="[0-9]{10}" required>
+            </div>
+
+            <button type="submit" id="profile-submit-btn" class="btn btn-primary" style="margin-top: 1rem;">Update Profile</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- MEMBERSHIP PANEL -->
+      <div id="panel-membership" class="dashboard-panel" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Digital Membership Card</h3>
+        <div id="full-membership-card-box">
+          <!-- Populated by script -->
+        </div>
+      </div>
+
+      <!-- VOLUNTEER PANEL -->
+      <div id="panel-volunteer" class="dashboard-panel" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Volunteer Force Status</h3>
+        <div id="volunteer-status-box" class="card glass-card" style="max-width: 600px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- DONATIONS PANEL -->
+      <div id="panel-donations" class="dashboard-panel" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Donation History</h3>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Order / Payment ID</th>
+                <th>Exemption Beneficiary</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="donations-history-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">Checking transactions...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </section>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    let currentUserSession = null;
+    let userProfile = null;
+    let memberRecord = null;
+    let volunteerRecord = null;
+    let donationsRecord = [];
+
+    // Check protected auth status
+    window.addEventListener("load", async () => {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session || !session.user) {
+            window.location.href = "login.html";
+            return;
+          }
+          
+          currentUserSession = session;
+          await loadDashboardData();
+
+        } catch (e) {
+          console.error("Auth routing failure:", e);
+          window.location.href = "login.html";
+        }
+      } else {
+        // Load offline demo data
+        loadDemoDashboard();
+      }
+    });
+
+    // Switch sidebar tab
+    function switchDashboardTab(tabName) {
+      document.querySelectorAll(".dashboard-panel").forEach(panel => {
+        panel.style.display = "none";
+      });
+      document.querySelectorAll(".dashboard-menu-link").forEach(link => {
+        link.classList.remove("active");
+      });
+
+      // Show panel
+      const targetPanel = document.getElementById(`panel-${tabName}`);
+      if (targetPanel) targetPanel.style.display = "block";
+
+      // Select menu link
+      const clickedLink = Array.from(document.querySelectorAll(".dashboard-menu-link"))
+        .find(link => link.getAttribute("onclick").includes(`'${tabName}'`));
+      if (clickedLink) clickedLink.classList.add("active");
+    }
+
+    // Load actual Supabase data
+    async function loadDashboardData() {
+      const user = currentUserSession.user;
+      
+      // Fetch user profile
+      const { data: profile } = await supabaseClient
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      
+      userProfile = profile;
+      
+      // Fetch membership
+      const { data: mem } = await supabaseClient
+        .from('members')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      
+      memberRecord = mem;
+
+      // Fetch volunteer record
+      const { data: vol } = await supabaseClient
+        .from('volunteers')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      volunteerRecord = vol;
+
+      // Fetch donations
+      const { data: dons } = await supabaseClient
+        .from('donations')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('status', 'success')
+        .order('created_at', { ascending: false });
+
+      donationsRecord = dons || [];
+
+      // Update UI elements
+      updateDashboardUI();
+    }
+
+    // Update UI components
+    function updateDashboardUI() {
+      const email = currentUserSession.user.email;
+      const fullName = userProfile?.full_name || currentUserSession.user.user_metadata?.full_name || "User";
+      
+      document.getElementById("sidebar-user-name").innerText = fullName;
+      document.getElementById("sidebar-user-email").innerText = email;
+      document.getElementById("header-user-firstname").innerText = fullName.split(" ")[0];
+      
+      // Role badge
+      const role = userProfile?.role || 'user';
+      const roleBadge = document.getElementById("role-badge");
+      roleBadge.innerText = role;
+      roleBadge.className = `badge ${role === 'admin' ? 'badge-success' : 'badge-pending'}`;
+
+      // Set profile form inputs
+      document.getElementById("p-email").value = email;
+      document.getElementById("p-name").value = fullName;
+      document.getElementById("p-phone").value = userProfile?.phone || "";
+
+      // Membership calculations
+      const statMemStatus = document.getElementById("stat-mem-status");
+      const quickIdContainer = document.getElementById("quick-id-container");
+      const fullMembershipBox = document.getElementById("full-membership-card-box");
+      
+      if (!memberRecord) {
+        statMemStatus.innerText = "Inactive";
+        statMemStatus.className = "stat-number";
+        statMemStatus.style.color = "var(--text-muted)";
+        
+        quickIdContainer.innerHTML = `
+          <div style="border: 1px dashed var(--border-color); padding: 2rem; border-radius: 8px; text-align: center;">
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">Apply to unlock voting & advisory privileges.</p>
+            <a href="membership.html" class="btn btn-primary btn-sm"><i data-lucide="award"></i> Get Member ID</a>
+          </div>
+        `;
+        fullMembershipBox.innerHTML = `
+          <div class="card glass-card text-center" style="max-width: 600px; padding: 3rem;">
+            <i data-lucide="award" class="text-gold" style="width: 48px; height: 48px; margin: 0 auto 1.5rem auto; display: block;"></i>
+            <h3>No Active Membership</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Acquire voting rights, directory access, and gold border certificate credentials.</p>
+            <a href="membership.html" class="btn btn-primary">Submit Membership Application</a>
+          </div>
+        `;
+      } else {
+        const isApproved = memberRecord.status === 'approved';
+        statMemStatus.innerText = memberRecord.status.toUpperCase();
+        statMemStatus.className = "stat-number";
+        statMemStatus.style.color = isApproved ? "var(--success)" : "var(--warning)";
+
+        const cardHtml = `
+          <div class="id-card">
+            <div class="id-card-header">
+              <span class="id-card-logo"><i data-lucide="shield-alert"></i> KGF TRUST MEMBER</span>
+              <span style="font-size: 0.65rem; color: var(--gold); border: 1px solid var(--gold); padding: 0.1rem 0.4rem; border-radius: 3px; font-weight: 600;">
+                ${memberRecord.membership_type.toUpperCase()}
+              </span>
+            </div>
+            <div class="id-card-body">
+              <div class="id-card-photo">
+                <img src="${memberRecord.photo_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'}" alt="Photo">
+              </div>
+              <div class="id-card-info">
+                <h4>${memberRecord.full_name}</h4>
+                <p><span style="color: var(--text-muted);">MEMBER ID:</span> <strong style="color: var(--gold);">${memberRecord.member_id || 'PENDING'}</strong></p>
+                <p><span style="color: var(--text-muted);">PLAN:</span> ${memberRecord.membership_type}</p>
+                <p><span style="color: var(--text-muted);">VALIDITY:</span> ${isApproved ? 'Permanent (Life)' : 'Pending Approval'}</p>
+              </div>
+            </div>
+            <div class="id-card-footer">
+              <span>EST. 2026</span>
+              <span>VERIFIED DIGITAL CARD</span>
+            </div>
+          </div>
+        `;
+
+        if (isApproved) {
+          quickIdContainer.innerHTML = cardHtml;
+          fullMembershipBox.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+              ${cardHtml}
+              <button onclick="window.print()" class="btn btn-outline" style="max-width: 380px;"><i data-lucide="printer"></i> Print ID Card</button>
+            </div>
+          `;
+        } else {
+          quickIdContainer.innerHTML = `
+            <div style="border: 1px dashed var(--warning); padding: 2rem; border-radius: 8px; text-align: center;">
+              <p style="color: var(--warning); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem;"><i data-lucide="clock" style="display: inline-block; vertical-align: middle;"></i> Verification Pending</p>
+              <p style="color: var(--text-muted); font-size: 0.8rem;">Admins are checking your credentials.</p>
+            </div>
+          `;
+          fullMembershipBox.innerHTML = `
+            <div class="card glass-card text-center" style="max-width: 600px; padding: 3rem; border-color: var(--warning);">
+              <i data-lucide="clock" class="text-gold" style="width: 48px; height: 48px; margin: 0 auto 1.5rem auto; display: block; animation: pulse 2s infinite;"></i>
+              <h3 style="color: var(--warning);">Application Under Review</h3>
+              <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Thank you for your application, ${memberRecord.full_name}. Registered ID: <strong>${memberRecord.member_id}</strong>.</p>
+              <span class="badge badge-pending">Verification Status: Pending</span>
+            </div>
+          `;
+        }
+      }
+
+      // Volunteer Calculations
+      const statVolStatus = document.getElementById("stat-vol-status");
+      const volStatusBox = document.getElementById("volunteer-status-box");
+
+      if (!volunteerRecord) {
+        statVolStatus.innerText = "Inactive";
+        statVolStatus.style.color = "var(--text-muted)";
+        volStatusBox.innerHTML = `
+          <div style="text-align: center; padding: 2rem 0;">
+            <i data-lucide="users" class="text-gold" style="width: 40px; height: 40px; margin-bottom: 1rem; display: inline-block;"></i>
+            <h4 style="margin-bottom: 0.5rem;">Join our Active Volunteer Force</h4>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">Devote your time for plantation drives, medical checkups and relief camps.</p>
+            <a href="volunteer.html" class="btn btn-primary btn-sm">Register as Volunteer</a>
+          </div>
+        `;
+      } else {
+        const isApproved = volunteerRecord.status === 'approved';
+        statVolStatus.innerText = volunteerRecord.status.toUpperCase();
+        statVolStatus.style.color = isApproved ? "var(--success)" : "var(--warning)";
+
+        volStatusBox.innerHTML = `
+          <div style="display: flex; gap: 2rem; align-items: center;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-color); flex-shrink: 0;">
+              <img src="${volunteerRecord.photo_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'}" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <div>
+              <h4 style="font-size: 1.15rem; margin-bottom: 0.25rem;">${volunteerRecord.full_name}</h4>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Skills Registered: <strong>${volunteerRecord.skills}</strong></p>
+              <span class="badge ${isApproved ? 'badge-success' : 'badge-pending'}">${isApproved ? 'Approved Volunteer' : 'Verification Pending'}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      // Donation Calculations
+      const statTotalDonations = document.getElementById("stat-total-donations");
+      const totalAmount = donationsRecord.reduce((acc, row) => acc + Number(row.amount), 0);
+      statTotalDonations.innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+
+      // Render Donations Table
+      const historyTbody = document.getElementById("donations-history-tbody");
+      if (donationsRecord.length === 0) {
+        historyTbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+              No successful contributions found linked to this account.
+            </td>
+          </tr>
+        `;
+      } else {
+        historyTbody.innerHTML = donationsRecord.map(don => {
+          const dateStr = new Date(don.created_at).toLocaleDateString('en-IN', {
+            day: 'numeric', month: 'short', year: 'numeric'
+          });
+          return `
+            <tr>
+              <td>${dateStr}</td>
+              <td style="font-family: monospace; font-size: 0.8rem;">${don.payment_id}</td>
+              <td>${don.donor_pan ? `PAN: ${don.donor_pan}` : 'General fund'}</td>
+              <td style="font-weight: 600;" class="text-gold">₹${Number(don.amount).toLocaleString('en-IN')}</td>
+              <td><span class="badge badge-success">Success</span></td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    // Update Profile DB Call
+    async function updateUserProfile(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById("profile-submit-btn");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Saving updates...";
+
+      const name = document.getElementById("p-name").value;
+      const phone = document.getElementById("p-phone").value;
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { error } = await supabaseClient
+            .from('users')
+            .update({ full_name: name, phone: phone })
+            .eq('id', currentUserSession.user.id);
+
+          if (error) {
+            showToast("Update failed: " + error.message, "error");
+          } else {
+            showToast("Profile details updated successfully!", "success");
+            // Refresh data
+            await loadDashboardData();
+          }
+        } catch (err) {
+          showToast(err.message, "error");
+        }
+      } else {
+        showToast("Profile updated successfully (Demo Mode)!", "success");
+      }
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Update Profile";
+    }
+
+    // Load fallback Mock Data when offline / not configured
+    function loadDemoDashboard() {
+      currentUserSession = {
+        user: { email: "demo.volunteer@kgftrust.org", user_metadata: { full_name: "Vikrant Singh" } }
+      };
+      userProfile = { full_name: "Vikrant Singh", phone: "9876543210", role: "user" };
+      memberRecord = {
+        full_name: "Vikrant Singh",
+        member_id: "KGF-MEM-2026-4820",
+        membership_type: "Life",
+        photo_url: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+        status: "approved"
+      };
+      volunteerRecord = {
+        full_name: "Vikrant Singh",
+        skills: "First-aid, Event Coordination",
+        photo_url: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+        status: "approved"
+      };
+      donationsRecord = [
+        { created_at: new Date().toISOString(), payment_id: "pay_NLV83901kfdl", donor_pan: "AMNPT1024L", amount: 1001, status: "success" }
+      ];
+      updateDashboardUI();
+    }
+  </script>
+</body>
+</html>

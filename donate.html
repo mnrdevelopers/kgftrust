@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate Now | KGF Trust</title>
+  <meta name="description" content="Support KGF Trust's missions. Make a one-time donation securely via Razorpay and claim 80G tax exemption.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    .donation-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+    .amount-tiles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .amount-tile {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 1.25rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+    .amount-tile:hover, .amount-tile.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-glow);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link active">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- BANNER --- -->
+  <section class="section-padding" style="background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&auto=format&fit=crop'); background-size: cover; background-position: center; padding-top: 150px; padding-bottom: 70px; text-align: center; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase;">Make a Donation</h1>
+      <p class="subtitle text-center" style="margin-bottom: 0;">Your contribution feeds, sponsors, and empowers lives.</p>
+    </div>
+  </section>
+
+  <!-- --- DONATION FLOW --- -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="donation-grid">
+        
+        <!-- Left: Donation Form -->
+        <div class="card glass-card">
+          <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">Select Contribution details</h2>
+          
+          <form id="donation-checkout-form" onsubmit="initiatePayment(event)">
+            
+            <!-- Suggested amounts -->
+            <label class="form-label">Suggested Donation Amount</label>
+            <div class="amount-tiles">
+              <div class="amount-tile active" onclick="selectAmount(101)">₹101</div>
+              <div class="amount-tile" onclick="selectAmount(501)">₹501</div>
+              <div class="amount-tile" onclick="selectAmount(1001)">₹1001</div>
+              <div class="amount-tile" onclick="selectAmount(5001)">₹5001</div>
+            </div>
+
+            <!-- Custom Amount input -->
+            <div class="form-group">
+              <label class="form-label" for="custom-amount-input">Custom Donation Amount (₹)</label>
+              <input type="number" id="custom-amount-input" class="form-control" placeholder="Enter custom amount" min="10" oninput="clearAmountTiles()">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label" for="donor-name">Full Name</label>
+                <input type="text" id="donor-name" class="form-control" placeholder="Your name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="donor-mobile">Mobile Number</label>
+                <input type="tel" id="donor-mobile" class="form-control" placeholder="10-digit mobile" pattern="[0-9]{10}" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="donor-email">Email Address</label>
+              <input type="email" id="donor-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group" style="border-top: 1px dashed var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+              <label class="form-label" for="donor-pan">PAN Number (Optional - Required for 80G tax benefit receipt)</label>
+              <input type="text" id="donor-pan" class="form-control" placeholder="ABCDE1234F" style="text-transform: uppercase;" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">Registered trust grants 50% tax deductions under Sec 80G.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem 2rem;">
+              <i data-lucide="shield-check"></i> Secure Checkout via Razorpay
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Why Donate -->
+        <div>
+          <div class="card" style="margin-bottom: 2rem; border-left: 3px solid var(--gold);">
+            <h3 style="color: var(--gold); margin-bottom: 1rem;">100% Transparency</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;">
+              Every rupee donated is directly mapped to active camps. Track receipts, project allocation details, and auditing histories inside your dashboard.
+            </p>
+          </div>
+          
+          <div class="card" style="margin-bottom: 2rem; border-left: 3px solid var(--gold);">
+            <h3 style="color: var(--gold); margin-bottom: 1rem;">Sec 80G Exemption</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;">
+              KGF Trust is approved under section 80G of the Income Tax Act. Provide your PAN details during payment to download tax exemption certificates from your dashboard profile.
+            </p>
+          </div>
+
+          <div class="card" style="background: var(--bg-secondary); border-color: var(--border-color);">
+            <h3 style="margin-bottom: 1rem;">Need Help?</h3>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">For bank transfers or corporate CSR grants, reach out directly to the treasury office.</p>
+            <a href="contact.html" class="btn btn-outline btn-sm btn-full"><i data-lucide="phone"></i> Contact Treasury</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- --- PAYMENT SUCCESS RECEIPT MODAL --- -->
+  <div class="modal" id="success-receipt-modal">
+    <div class="modal-content" style="max-width: 500px; text-align: center;">
+      <i data-lucide="badge-check" style="width: 70px; height: 70px; color: var(--success); margin: 0 auto 1.5rem auto; display: block;"></i>
+      <h2 style="color: var(--success); margin-bottom: 0.5rem;">Donation Successful!</h2>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem;">Thank you for your generous support of KGF Trust.</p>
+      
+      <!-- Receipt Box -->
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem; text-align: left; margin-bottom: 2rem; font-size: 0.9rem;">
+        <div style="text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+          <h4 style="margin: 0; text-transform: uppercase; letter-spacing: 1px;">KGF TRUST RECEIPT</h4>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">80G Reg: DIT(E)/2024/1234</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem;">
+          <span style="color: var(--text-muted);">Receipt No:</span>
+          <strong id="rec-no">KGF-REC-8923</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem;">
+          <span style="color: var(--text-muted);">Donor Name:</span>
+          <strong id="rec-name">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem;">
+          <span style="color: var(--text-muted);">Amount:</span>
+          <strong id="rec-amount" class="text-gold">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem;">
+          <span style="color: var(--text-muted);">Payment ID:</span>
+          <strong id="rec-payid" style="font-size: 0.8rem;">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">PAN (80G):</span>
+          <strong id="rec-pan">-</strong>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        <button onclick="window.print()" class="btn btn-outline" style="flex: 1;"><i data-lucide="printer"></i> Print</button>
+        <a href="dashboard.html" class="btn btn-primary" style="flex: 1;"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="margin-bottom: 1.2rem;">
+            <img src="images/logo.png" alt="KGF Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold); margin-right: 8px;">
+            <span>KGF Trust</span>
+          </a>
+          <p class="footer-about">
+            Kalki Grit Force Trust is a registered charity dedicated to rural development, health camps, sports talent sponsorship, and food security.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+            <p><strong>REG No:</strong> REG/2024/TRUST/12345</p>
+            <p><strong>80G No:</strong> DIT(E)/2024/1234</p>
+            <p><strong>PAN:</strong> AAACT1234C</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Trust</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="gallery.html">Media Gallery</a></li>
+            <li><a href="events.html">Events & News</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contribute</h3>
+          <ul class="footer-links">
+            <li><a href="donate.html">Donate Funds</a></li>
+            <li><a href="volunteer.html">Volunteer Registration</a></li>
+            <li><a href="membership.html">Trust Membership</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact Office</h3>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+            <span>Sector 4, Main Hub, New Delhi, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+            <span>+91 77777 77777</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            <span>support@kgftrust.org</span>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="twitter" style="width: 18px; height: 18px;"></i></a>
+            <a href="https://wa.me/917777777777" target="_blank" class="social-btn"><i data-lucide="phone-call" style="width: 18px; height: 18px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kalki Grit Force Trust. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    let selectedDonationAmount = 101; // default
+
+    // Autofill logged-in user details on load
+    window.addEventListener("load", async () => {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session && session.user) {
+          const { data: profile } = await supabaseClient
+            .from('users')
+            .select('full_name, email, phone')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (profile) {
+            if (profile.full_name) document.getElementById("donor-name").value = profile.full_name;
+            if (profile.email) document.getElementById("donor-email").value = profile.email;
+            if (profile.phone) document.getElementById("donor-mobile").value = profile.phone;
+          }
+        }
+      }
+    });
+
+    function selectAmount(amount) {
+      selectedDonationAmount = amount;
+      
+      // Update tiles style
+      const tiles = document.querySelectorAll(".amount-tile");
+      tiles.forEach(tile => {
+        tile.classList.remove("active");
+        if (tile.innerText === `₹${amount}`) {
+          tile.classList.add("active");
+        }
+      });
+
+      // Clear input custom amount
+      document.getElementById("custom-amount-input").value = "";
+    }
+
+    function clearAmountTiles() {
+      // Clear tiles active state
+      const tiles = document.querySelectorAll(".amount-tile");
+      tiles.forEach(tile => tile.classList.remove("active"));
+      
+      // Amount is driven by the custom input
+      const customVal = Number(document.getElementById("custom-amount-input").value);
+      selectedDonationAmount = customVal;
+    }
+
+    // Payment Checkout initiation
+    async function initiatePayment(e) {
+      e.preventDefault();
+
+      // Read amount
+      let amount = selectedDonationAmount;
+      if (!amount || amount <= 0) {
+        // Fallback to custom input
+        amount = Number(document.getElementById("custom-amount-input").value);
+      }
+
+      if (!amount || amount < 10) {
+        showToast("Please select or enter a valid donation amount (minimum ₹10).", "warning");
+        return;
+      }
+
+      const name = document.getElementById("donor-name").value;
+      const email = document.getElementById("donor-email").value;
+      const mobile = document.getElementById("donor-mobile").value;
+      const pan = document.getElementById("donor-pan").value;
+
+      let userId = null;
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session && session.user) userId = session.user.id;
+      }
+
+      // Check if Supabase Edge Function creates Razorpay Order
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          showToast("Initiating secure order...", "warning");
+          
+          // Make call to Supabase Edge Function: create-razorpay-order
+          const { data, error } = await supabaseClient.functions.invoke('create-razorpay-order', {
+            body: { amount, currency: "INR", receipt: `rec_${Date.now()}` }
+          });
+
+          if (error || !data) {
+            console.warn("Edge function failed, falling back to client-side direct payment:", error);
+            startClientSideCheckout(amount, name, email, mobile, pan, userId, null);
+          } else {
+            // Start standard Razorpay checkout with Order ID
+            startClientSideCheckout(amount, name, email, mobile, pan, userId, data.id);
+          }
+        } catch (err) {
+          console.warn("Network error during edge function call. Running checkout fallback.", err);
+          startClientSideCheckout(amount, name, email, mobile, pan, userId, null);
+        }
+      } else {
+        // Demo mode fallback checkout
+        showToast("Entering Demo Payment Mode...", "warning");
+        startClientSideCheckout(amount, name, email, mobile, pan, userId, null);
+      }
+    }
+
+    // Start Razorpay Checkout UI overlay
+    function startClientSideCheckout(amount, name, email, mobile, pan, userId, orderId) {
+      // Use Test Razorpay Key ID (standard placeholder or public test key if configured)
+      const rzpKeyId = "rzp_test_5wPqGz7LpWc9aZ"; // Standard Razorpay public sandbox test key
+
+      const options = {
+        key: rzpKeyId,
+        amount: amount * 100, // in paise
+        currency: "INR",
+        name: "KGF Trust",
+        description: "General Donation",
+        image: "https://unpkg.com/@lucide/lab@1.0.0/icons/shield-alert.svg",
+        order_id: orderId || undefined, // undefined for direct payment checkout fallback
+        handler: async function (response) {
+          showToast("Payment processing, verifying...", "warning");
+          
+          let paymentId = response.razorpay_payment_id;
+          let signature = response.razorpay_signature;
+          let rzpOrderId = response.razorpay_order_id || orderId;
+
+          // If signature is returned, attempt to verify it via edge function
+          if (signature && rzpOrderId && typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+            try {
+              const { data: verificationData, error: verifyError } = await supabaseClient.functions.invoke('verify-razorpay-payment', {
+                body: {
+                  razorpay_order_id: rzpOrderId,
+                  razorpay_payment_id: paymentId,
+                  razorpay_signature: signature,
+                  donor_name: name,
+                  donor_email: email,
+                  donor_mobile: mobile,
+                  donor_pan: pan,
+                  amount: amount,
+                  user_id: userId
+                }
+              });
+
+              if (verifyError || !verificationData || !verificationData.success) {
+                showToast("Verification failed. Saving transaction directly.", "warning");
+                await saveDonationToDBDirectly(amount, name, email, mobile, pan, userId, paymentId, rzpOrderId);
+              } else {
+                showSuccessModal(amount, name, paymentId, pan);
+              }
+            } catch (err) {
+              await saveDonationToDBDirectly(amount, name, email, mobile, pan, userId, paymentId, rzpOrderId);
+            }
+          } else {
+            // Save payment directly to public.donations when offline or order verification is bypassed
+            await saveDonationToDBDirectly(amount, name, email, mobile, pan, userId, paymentId, rzpOrderId);
+          }
+        },
+        prefill: {
+          name: name,
+          email: email,
+          contact: mobile
+        },
+        notes: {
+          pan_card: pan || "NOT_PROVIDED"
+        },
+        theme: {
+          color: "#D4AF37"
+        }
+      };
+
+      try {
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function (response){
+          showToast("Payment Failed: " + response.error.description, "error");
+        });
+        rzp.open();
+      } catch (err) {
+        showToast("Failed to initialize Razorpay: " + err.message, "error");
+      }
+    }
+
+    // Direct save fallback (for front-end only demo or sandbox verification failures)
+    async function saveDonationToDBDirectly(amount, name, email, mobile, pan, userId, paymentId, orderId) {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { error } = await supabaseClient
+            .from('donations')
+            .insert({
+              user_id: userId || null,
+              donor_name: name,
+              donor_email: email,
+              donor_mobile: mobile,
+              donor_pan: pan || null,
+              amount: amount,
+              payment_id: paymentId || `pay_mock_${Date.now()}`,
+              order_id: orderId || `order_mock_${Date.now()}`,
+              status: 'success'
+            });
+
+          if (error) {
+            console.error("Direct insert failed:", error);
+            showToast("Transaction registered client-side only.", "warning");
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      showSuccessModal(amount, name, paymentId || `pay_demo_${Date.now()}`, pan);
+    }
+
+    // Render printable details in Success Modal
+    function showSuccessModal(amount, name, paymentId, pan) {
+      const modal = document.getElementById("success-receipt-modal");
+      document.getElementById("rec-no").innerText = `KGF-REC-${Math.floor(100000 + Math.random() * 900000)}`;
+      document.getElementById("rec-name").innerText = name;
+      document.getElementById("rec-amount").innerText = `₹${amount}`;
+      document.getElementById("rec-payid").innerText = paymentId;
+      document.getElementById("rec-pan").innerText = pan || "Not Provided";
+      
+      modal.classList.add("active");
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

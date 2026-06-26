@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events & Programs | KGF Trust</title>
+  <meta name="description" content="View upcoming community camps and past charity event archives of Kalki Grit Force Trust. Register to join.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+    .event-card {
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .event-img-wrapper {
+      position: relative;
+      height: 200px;
+      background: #222;
+    }
+    .event-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .event-date-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 0.5rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: var(--shadow-premium);
+    }
+    .event-details-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .event-meta-info {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.8rem;
+    }
+    .event-meta-info span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .event-meta-info i {
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link active">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- BANNER --- -->
+  <section class="section-padding" style="background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop'); background-size: cover; background-position: center; padding-top: 150px; padding-bottom: 70px; text-align: center; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase;">Events & Programs</h1>
+      <p class="subtitle text-center" style="margin-bottom: 0;">Be a part of our scheduled drives or view archives of past achievements.</p>
+    </div>
+  </section>
+
+  <!-- --- EVENTS MAIN --- -->
+  <section class="section-padding">
+    <div class="container">
+      <!-- Tabs -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" id="btn-upcoming" onclick="toggleEventsFilter('upcoming')"><i data-lucide="calendar-range"></i> Upcoming Events</button>
+        <button class="tab-btn" id="btn-past" onclick="toggleEventsFilter('past')"><i data-lucide="history"></i> Past Events Archive</button>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid" id="events-grid-panel">
+        <!-- Load defaults dynamically or fallback via script -->
+      </div>
+    </div>
+  </section>
+
+  <!-- --- REGISTRATION MODAL --- -->
+  <div class="modal" id="event-reg-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeRegModal()">&times;</button>
+      <h3 style="margin-bottom: 0.5rem; color: var(--gold);" id="reg-modal-title">Event Registration</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2rem;" id="reg-modal-subtitle"></p>
+      
+      <form id="event-reg-form" onsubmit="handleEventRegistration(event)">
+        <input type="hidden" id="reg-event-id">
+        
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-mobile">Mobile Number</label>
+          <input type="tel" id="reg-mobile" class="form-control" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top: 1rem;">Confirm Registration</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="margin-bottom: 1.2rem;">
+            <img src="images/logo.png" alt="KGF Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold); margin-right: 8px;">
+            <span>KGF Trust</span>
+          </a>
+          <p class="footer-about">
+            Kalki Grit Force Trust is a registered charity dedicated to rural development, health camps, sports talent sponsorship, and food security.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+            <p><strong>REG No:</strong> REG/2024/TRUST/12345</p>
+            <p><strong>80G No:</strong> DIT(E)/2024/1234</p>
+            <p><strong>PAN:</strong> AAACT1234C</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Trust</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="gallery.html">Media Gallery</a></li>
+            <li><a href="events.html">Events & News</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contribute</h3>
+          <ul class="footer-links">
+            <li><a href="donate.html">Donate Funds</a></li>
+            <li><a href="volunteer.html">Volunteer Registration</a></li>
+            <li><a href="membership.html">Trust Membership</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact Office</h3>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+            <span>Sector 4, Main Hub, New Delhi, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+            <span>+91 77777 77777</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            <span>support@kgftrust.org</span>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="twitter" style="width: 18px; height: 18px;"></i></a>
+            <a href="https://wa.me/917777777777" target="_blank" class="social-btn"><i data-lucide="phone-call" style="width: 18px; height: 18px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kalki Grit Force Trust. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    // Static Fallback Events Data (when DB is empty)
+    const fallbackEvents = [
+      {
+        id: "ev1",
+        title: "Monsoon Blood Donation Camp",
+        description: "Join our active drive to support central blood reserves. Pre-registration helps coordinate hospital delivery timings.",
+        date: "2026-07-12",
+        time: "09:00:00",
+        location: "KGF Central Hub Hall",
+        image_url: "https://images.unsplash.com/photo-1615461066841-6116ecdccd04?q=80&w=400",
+        capacity: 150,
+        registrations_count: 85,
+        status: "upcoming"
+      },
+      {
+        id: "ev2",
+        title: "Clean Water Channeling Drive",
+        description: "Deploying bio-filters along Sector 4 river channels. Wear sports gear and bring a water flask. Protection gear provided.",
+        date: "2026-07-28",
+        time: "06:30:00",
+        location: "Sector 4 River Banks",
+        image_url: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=400",
+        capacity: 80,
+        registrations_count: 32,
+        status: "upcoming"
+      },
+      {
+        id: "ev3",
+        title: "Winter Relief Blanket Distribution",
+        description: "Distributed 800 heavy wool blankets to migrant settlements and daily wage worker shelters in Delhi margins.",
+        date: "2026-01-15",
+        time: "18:00:00",
+        location: "Old Delhi Marginal Outposts",
+        image_url: "https://images.unsplash.com/photo-1469571486117-7858618e3ddc?q=80&w=400",
+        capacity: 100,
+        registrations_count: 100,
+        status: "past"
+      }
+    ];
+
+    let currentFilter = "upcoming";
+    let allEvents = [...fallbackEvents];
+
+    // Toggle filter
+    function toggleEventsFilter(filter) {
+      currentFilter = filter;
+      document.getElementById("btn-upcoming").classList.toggle("active", filter === "upcoming");
+      document.getElementById("btn-past").classList.toggle("active", filter === "past");
+      renderEvents();
+    }
+
+    // Render Events in grid
+    function renderEvents() {
+      const grid = document.getElementById("events-grid-panel");
+      const filtered = allEvents.filter(ev => ev.status === currentFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
+            <i data-lucide="calendar-days" style="width: 48px; height: 48px; margin-bottom: 1rem; color: var(--text-muted);"></i>
+            <p>No events found for this category.</p>
+          </div>
+        `;
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = filtered.map(ev => {
+        const evDate = new Date(ev.date);
+        const day = evDate.getDate();
+        const month = evDate.toLocaleString('en-US', { month: 'short' });
+        const spotsLeft = ev.capacity - ev.registrations_count;
+
+        return `
+          <div class="card event-card reveal active">
+            <div class="event-img-wrapper">
+              <img src="${ev.image_url}" alt="${ev.title}" loading="lazy">
+              <div class="event-date-badge">
+                <div style="font-size: 1.2rem; font-weight: 800; line-height: 1;">${day}</div>
+                <div style="font-size: 0.75rem; text-transform: uppercase;">${month}</div>
+              </div>
+            </div>
+            <div class="event-details-body">
+              <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">${ev.title}</h3>
+              <div class="event-meta-info">
+                <span><i data-lucide="clock" style="width: 14px; height: 14px;"></i> ${ev.time.substring(0, 5)}</span>
+                <span><i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> ${ev.location}</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; flex-grow: 1;">
+                ${ev.description}
+              </p>
+              ${
+                ev.status === 'upcoming' 
+                  ? `<div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+                       <span style="font-size: 0.85rem; color: ${spotsLeft < 10 ? 'var(--error)' : 'var(--text-muted)'}; font-weight: 500;">
+                         ${spotsLeft <= 0 ? 'House Full' : `${spotsLeft} seats remaining`}
+                       </span>
+                       <button ${spotsLeft <= 0 ? 'disabled' : ''} onclick="openRegModal('${ev.id}', '${ev.title}', '${ev.location}')" class="btn btn-primary btn-sm">
+                         Register
+                       </button>
+                     </div>`
+                  : `<div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; border-top: 1px dashed var(--border-color); padding-top: 1rem;">
+                       <span class="badge badge-success">Completed</span>
+                       <span style="font-size: 0.85rem; color: var(--text-muted);">${ev.registrations_count} Attendees Joined</span>
+                     </div>`
+              }
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    // Modal Control
+    function openRegModal(eventId, title, location) {
+      const modal = document.getElementById("event-reg-modal");
+      document.getElementById("reg-event-id").value = eventId;
+      document.getElementById("reg-modal-title").innerText = `Register: ${title}`;
+      document.getElementById("reg-modal-subtitle").innerText = `Venue: ${location}`;
+
+      // Autofill logged-in user info if possible
+      autofillRegForm();
+
+      modal.classList.add("active");
+    }
+
+    function closeRegModal() {
+      const modal = document.getElementById("event-reg-modal");
+      document.getElementById("event-reg-form").reset();
+      modal.classList.remove("active");
+    }
+
+    async function autofillRegForm() {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session && session.user) {
+          const { data: profile } = await supabaseClient
+            .from('users')
+            .select('full_name, phone, email')
+            .eq('id', session.user.id)
+            .single();
+
+          if (profile) {
+            if (profile.full_name) document.getElementById("reg-name").value = profile.full_name;
+            if (profile.email) document.getElementById("reg-email").value = profile.email;
+            if (profile.phone) document.getElementById("reg-mobile").value = profile.phone;
+          }
+        }
+      }
+    }
+
+    // Handle Form Submission
+    async function handleEventRegistration(e) {
+      e.preventDefault();
+      
+      const eventId = document.getElementById("reg-event-id").value;
+      const name = document.getElementById("reg-name").value;
+      const email = document.getElementById("reg-email").value;
+      const mobile = document.getElementById("reg-mobile").value;
+
+      let userId = null;
+
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (session && session.user) {
+            userId = session.user.id;
+          }
+
+          // Insert into event_registrations
+          const { error } = await supabaseClient
+            .from('event_registrations')
+            .insert({
+              event_id: eventId,
+              user_id: userId,
+              name,
+              email,
+              mobile
+            });
+
+          if (error) {
+            if (error.code === "23505") {
+              showToast("You have already registered for this event with this email.", "warning");
+            } else {
+              showToast("Error registering: " + error.message, "error");
+            }
+            return;
+          }
+
+          showToast("Registration successful! We will contact you with details.", "success");
+          
+          // Re-fetch events to update the registration count in memory
+          await loadEventsFromSupabase();
+          closeRegModal();
+
+        } catch (err) {
+          showToast("Network error occurred: " + err.message, "error");
+        }
+      } else {
+        // Mock success when offline
+        const targetEvent = allEvents.find(ev => ev.id === eventId);
+        if (targetEvent) {
+          targetEvent.registrations_count++;
+        }
+        showToast("Registration successful (Demo Mode)!", "success");
+        renderEvents();
+        closeRegModal();
+      }
+    }
+
+    // Load from database
+    async function loadEventsFromSupabase() {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: dbEvents, error } = await supabaseClient
+            .from('events')
+            .select('*')
+            .order('date', { ascending: true });
+
+          if (!error && dbEvents) {
+            // Keep default static fallbacks if db has no entries, otherwise replace
+            if (dbEvents.length > 0) {
+              allEvents = dbEvents;
+            }
+          }
+        } catch (e) {
+          console.log("Error loading events from database:", e);
+        }
+      }
+      renderEvents();
+    }
+
+    window.addEventListener("load", loadEventsFromSupabase);
+  </script>
+</body>
+</html>

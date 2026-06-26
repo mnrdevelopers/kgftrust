@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Activities | KGF Trust</title>
+  <meta name="description" content="Explore KGF Trust's community activities: Education, Sports, Health Awareness, Food Distribution, Blood Donation, Environment, and Community Service.">
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link active">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- BANNER --- -->
+  <section class="section-padding" style="background: radial-gradient(circle at center, rgba(15,15,15,0.7) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=1200&auto=format&fit=crop'); background-size: cover; background-position: center; padding-top: 150px; padding-bottom: 70px; text-align: center; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase;">Our Activities</h1>
+      <p class="subtitle text-center" style="margin-bottom: 0;">A detailed log of our operations on the ground, categorized by sector.</p>
+    </div>
+  </section>
+
+  <!-- --- MAIN CONTENT: INTERACTIVE TABS --- -->
+  <section class="section-padding">
+    <div class="container">
+      <!-- Tab Controls -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchActivity('education')"><i data-lucide="book-open"></i> Education</button>
+        <button class="tab-btn" onclick="switchActivity('sports')"><i data-lucide="award"></i> Sports</button>
+        <button class="tab-btn" onclick="switchActivity('selfdefence')"><i data-lucide="shield"></i> Self Defence Training</button>
+        <button class="tab-btn" onclick="switchActivity('health')"><i data-lucide="heart-pulse"></i> Health Awareness</button>
+        <button class="tab-btn" onclick="switchActivity('food')"><i data-lucide="soup"></i> Food Distribution</button>
+        <button class="tab-btn" onclick="switchActivity('blood')"><i data-lucide="droplet"></i> Blood Donation</button>
+        <button class="tab-btn" onclick="switchActivity('environment')"><i data-lucide="trees"></i> Environment</button>
+        <button class="tab-btn" onclick="switchActivity('community')"><i data-lucide="hand-helping"></i> Community Service</button>
+      </div>
+
+      <!-- Tab Content Panels -->
+      
+      <!-- EDUCATION PANEL -->
+      <div id="education" class="tab-content-panel active">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Empowerment & Education</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              We believe education is the primary weapon to eliminate structural poverty. KGF Trust actively funds academic support programs for rural and municipal school children who lack resources to complete their schooling.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>Sponsoring private tuition fees and school supplies.</li>
+              <li>Setting up local community centers with computers and internet access.</li>
+              <li>Providing books, calculators, and study desks.</li>
+            </ul>
+            <a href="volunteer.html" class="btn btn-primary">Support this Initiative</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop" alt="Education Drive" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-education" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <!-- Loaded dynamically or fallbacks -->
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+          <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- SPORTS PANEL -->
+      <div id="sports" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Sports Development & Support</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              Raw athletic potential in rural regions often goes unnoticed due to lack of funding, nutrition, and kits. We track and sponsor young talents who demonstrate exceptional potential in athletics, wrestling, kabaddi, and cricket.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>Providing customized sports kits, spikes, and protective gear.</li>
+              <li>Sponsoring macro-nutrient dietary requirements.</li>
+              <li>Connecting athletes with state and national coaches.</li>
+            </ul>
+            <a href="volunteer.html" class="btn btn-primary">Nominate an Athlete</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=800&auto=format&fit=crop" alt="Sports Drive" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-sports" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+          <img src="https://images.unsplash.com/photo-1526676001074-6fe5a3161c71?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- HEALTH PANEL -->
+      <div id="health" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Health & Diagnostic Camps</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              Quality health diagnostics are scarce in deep rural belts. KGF Trust hosts free periodic screening camps, testing for blood pressure, sugar levels, eye issues, and providing free diagnostic medicines.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>Mobile health clinics traversing underserved villages.</li>
+              <li>Free consultation sessions with cardiologists and pediatricians.</li>
+              <li>Free eye-care spectacles distributions.</li>
+            </ul>
+            <a href="volunteer.html" class="btn btn-primary">Join Medical Team</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop" alt="Health Awareness" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-health" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- FOOD PANEL -->
+      <div id="food" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Food & Nutri-Meal Distribution</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              Nutrition is the primary fuel for structural development. KGF Trust maintains standard distribution lines providing high-quality hot meals and dry ration packages to families living below the absolute poverty threshold.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>Weekly community kitchens serving nutritious dal-rice and fresh vegetables.</li>
+              <li>Monthly dry ration packages (wheat, rice, pulses, cooking oil) for families.</li>
+              <li>Emergency high-protein support packs for pregnant mothers.</li>
+            </ul>
+            <a href="donate.html" class="btn btn-primary">Sponsor a Meal Camp</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop" alt="Food Distribution" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-food" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- BLOOD PANEL -->
+      <div id="blood" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Blood Donation Networks</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              During emergency medical situations, securing matched blood categories quickly is critical. KGF Trust manages an extensive database of pre-registered blood donors and runs large-scale collection campaigns.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>24/7 helpline system coordinating emergency donors with hospitals.</li>
+              <li>Quarterly blood donation camps in corporate and college hubs.</li>
+              <li>Vetting, health-checks, and card-provision for registered blood donors.</li>
+            </ul>
+            <a href="volunteer.html" class="btn btn-primary">Register as Blood Donor</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1615461066841-6116ecdccd04?q=80&w=800&auto=format&fit=crop" alt="Blood Donation" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-blood" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1536856788630-ceab2737ad7f?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- ENVIRONMENT PANEL -->
+      <div id="environment" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Environmental Sustainability</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              Protecting natural water sheds and rural soil density is paramount for the next generation. KGF Trust executes strategic tree plantations, checks plastic pollution in water bodies, and drives zero-waste awareness.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>"Miyawaki" style dense forest planting in urban margins.</li>
+              <li>Cleaning plastic waste from local river channels and public parks.</li>
+              <li>Distributing free saplings and eco-friendly bags.</li>
+            </ul>
+            <a href="volunteer.html" class="btn btn-primary">Join Plantation Drive</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop" alt="Environmental Drive" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-environment" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- COMMUNITY PANEL -->
+      <div id="community" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Crisis Relief & Support</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              When natural calamities, heavy floods, or sudden cold waves hit vulnerable populations, our volunteer teams mobilize rapidly, delivering immediate food, blankets, and temporary housing components.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>Distributing warm blankets and woolen clothing during winter peaks.</li>
+              <li>Deploying water purifiers and dry rations in flood-ravaged sectors.</li>
+              <li>Rebuilding damaged primary community structures.</li>
+            </ul>
+            <a href="donate.html" class="btn btn-primary">Support Emergency Fund</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=800&auto=format&fit=crop" alt="Community Relief" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-community" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1469571486117-7858618e3ddc?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+      <!-- SELF DEFENCE PANEL -->
+      <div id="selfdefence" class="tab-content-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-bottom: 4rem;">
+          <div>
+            <h2 class="text-gold" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Self Defence & Women Safety</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.2rem;">
+              Empowerment is incomplete without safety. KGF Trust conducts professional training workshops in schools, colleges, and rural clusters, focusing on self-defense, martial arts, and situational awareness.
+            </p>
+            <h4 class="text-gold" style="margin-bottom: 0.8rem; font-weight: 600;">Key Initiatives:</h4>
+            <ul style="color: var(--text-secondary); margin-bottom: 2rem; padding-left: 1.2rem; line-height: 1.8;">
+              <li>Free martial arts and combat technique training sessions.</li>
+              <li>Empowering women and youth with situational awareness strategies.</li>
+              <li>Sponsoring professional training for competitive combat sports.</li>
+            </ul>
+            <a href="volunteer.html" class="btn btn-primary">Join as Instructor</a>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=800&auto=format&fit=crop" alt="Self Defence" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);">
+          </div>
+        </div>
+        <h3 class="text-center" style="margin-bottom: 2rem;">Activity Gallery</h3>
+        <div class="activity-gallery" id="gallery-selfdefence" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;">
+          <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=400&auto=format&fit=crop" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="margin-bottom: 1.2rem;">
+            <img src="images/logo.png" alt="KGF Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold); margin-right: 8px;">
+            <span>KGF Trust</span>
+          </a>
+          <p class="footer-about">
+            Kalki Grit Force Trust is a registered charity dedicated to rural development, health camps, sports talent sponsorship, and food security.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+            <p><strong>REG No:</strong> REG/2024/TRUST/12345</p>
+            <p><strong>80G No:</strong> DIT(E)/2024/1234</p>
+            <p><strong>PAN:</strong> AAACT1234C</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Trust</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="gallery.html">Media Gallery</a></li>
+            <li><a href="events.html">Events & News</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contribute</h3>
+          <ul class="footer-links">
+            <li><a href="donate.html">Donate Funds</a></li>
+            <li><a href="volunteer.html">Volunteer Registration</a></li>
+            <li><a href="membership.html">Trust Membership</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact Office</h3>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+            <span>Sector 4, Main Hub, New Delhi, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+            <span>+91 77777 77777</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            <span>support@kgftrust.org</span>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+            <a href="#" class="social-btn"><i data-lucide="twitter" style="width: 18px; height: 18px;"></i></a>
+            <a href="https://wa.me/917777777777" target="_blank" class="social-btn"><i data-lucide="phone-call" style="width: 18px; height: 18px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kalki Grit Force Trust. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    // Tab switching mechanism
+    function switchActivity(activityId) {
+      document.querySelectorAll(".tab-content-panel").forEach(panel => {
+        panel.classList.remove("active");
+      });
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+      
+      const targetPanel = document.getElementById(activityId);
+      if (targetPanel) targetPanel.classList.add("active");
+      
+      // Find button matching this click
+      const event = window.event;
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add("active");
+      }
+      
+      // Load gallery for this category
+      loadActivityCategoryGallery(activityId);
+    }
+
+    // Load dynamic gallery images for specific category from Supabase
+    async function loadActivityCategoryGallery(category) {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: galleryItems } = await supabaseClient
+            .from('gallery')
+            .select('*')
+            .eq('category', category)
+            .eq('type', 'image')
+            .order('created_at', { ascending: false });
+
+          if (galleryItems && galleryItems.length > 0) {
+            const grid = document.getElementById(`gallery-${category}`);
+            if (grid) {
+              grid.innerHTML = galleryItems.map(item => `
+                <img src="${item.url}" alt="${item.caption || 'Activity Gallery'}" style="border-radius: 4px; border: 1px solid var(--border-color); height: 160px; object-fit: cover; width: 100%;">
+              `).join("");
+            }
+          }
+        } catch (e) {
+          console.log(`Failed to load gallery for ${category}:`, e);
+        }
+      }
+    }
+
+    // Initial load
+    window.addEventListener("load", () => {
+      loadActivityCategoryGallery('education');
+    });
+  </script>
+</body>
+</html>

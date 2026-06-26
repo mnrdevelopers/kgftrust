@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | KGF Trust</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .admin-stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .admin-stat-card i {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+    .admin-stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 0.5rem;
+    }
+    
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-secondary);
+      margin-bottom: 2.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    th, td {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    th {
+      background-color: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .img-avatar-sm {
+      width: 38px;
+      height: 38px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+    .btn-action-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-action {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition-smooth);
+    }
+    .btn-action-approve { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .btn-action-approve:hover { background: var(--success); color: #000; }
+    .btn-action-reject { background: rgba(239, 68, 68, 0.2); color: var(--error); }
+    .btn-action-reject:hover { background: var(--error); color: #000; }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header class="scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="KGF Logo" style="height: 40px; width: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--gold);">
+        <span>KGF Trust Admin</span>
+      </a>
+      
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="activities.html" class="nav-link">Activities</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="donate.html" class="nav-link">Donate</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          <i data-lucide="sun"></i>
+        </button>
+        <div id="header-auth-actions">
+          <!-- Populated by common.js -->
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- DASHBOARD CORE --- -->
+  <section class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div style="text-align: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 1.5rem;">
+        <h3 style="margin-bottom: 0.25rem; font-size: 1.25rem;" class="text-gold"><i data-lucide="shield-check"></i> Admin Hub</h3>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">System Administrator</span>
+      </div>
+
+      <ul class="dashboard-sidebar-menu">
+        <li><a href="#" class="dashboard-menu-link active" onclick="switchAdminTab('overview')"><i data-lucide="bar-chart-3"></i> Overview</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchAdminTab('members')"><i data-lucide="award"></i> Approve Members</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchAdminTab('volunteers')"><i data-lucide="users"></i> Approve Volunteers</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchAdminTab('events')"><i data-lucide="calendar"></i> Manage Events</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchAdminTab('gallery')"><i data-lucide="image"></i> Manage Gallery</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchAdminTab('news')"><i data-lucide="newspaper"></i> Add News</a></li>
+        <li><a href="#" class="dashboard-menu-link" onclick="switchAdminTab('contact')"><i data-lucide="mail"></i> Inquiries</a></li>
+      </ul>
+      
+      <button onclick="handleLogout()" class="btn btn-outline btn-full btn-sm" style="margin-top: auto;"><i data-lucide="log-out"></i> Log Out</button>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="dashboard-main">
+      
+      <!-- HEADER -->
+      <div class="dashboard-header" style="margin-bottom: 2rem;">
+        <div>
+          <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">Control Console</h1>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Manage system approvals, analytics, and content publications.</p>
+        </div>
+        <div id="demo-badge-container"></div>
+      </div>
+
+      <!-- OVERVIEW TAB -->
+      <div id="panel-overview" class="admin-panel">
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <i data-lucide="wallet"></i>
+            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Total Funds</h4>
+            <div class="admin-stat-num" id="stat-total-raised">₹0</div>
+          </div>
+          <div class="admin-stat-card">
+            <i data-lucide="award"></i>
+            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Members</h4>
+            <div class="admin-stat-num" id="stat-active-members">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <i data-lucide="users"></i>
+            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Volunteers</h4>
+            <div class="admin-stat-num" id="stat-active-volunteers">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <i data-lucide="mail"></i>
+            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Inquiries</h4>
+            <div class="admin-stat-num" id="stat-active-inquiries">0</div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 1.5rem;">Recent Transactions</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Donor Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>PAN (80G)</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-donations-tbody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted);">No records loaded.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MEMBERS TAB -->
+      <div id="panel-members" class="admin-panel" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Pending Member Registrations</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Plan Type</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Aadhaar</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-members-tbody">
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--text-muted);">No pending applications.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VOLUNTEERS TAB -->
+      <div id="panel-volunteers" class="admin-panel" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Pending Volunteer Applications</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Occupation</th>
+                <th>Skills</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Aadhaar</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-volunteers-tbody">
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--text-muted);">No pending volunteer forms.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MANAGE EVENTS TAB -->
+      <div id="panel-events" class="admin-panel" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start;">
+          <!-- Left Form -->
+          <div class="card glass-card">
+            <h3 style="margin-bottom: 1.5rem; color: var(--gold);">Create Event</h3>
+            
+            <form id="admin-create-event-form" onsubmit="createEventSubmit(event)">
+              <div class="form-group">
+                <label class="form-label" for="ev-title">Event Title</label>
+                <input type="text" id="ev-title" class="form-control" placeholder="e.g. Blood Donation camp" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ev-description">Event Description</label>
+                <textarea id="ev-description" class="form-control" placeholder="Enter details..." required style="min-height: 85px;"></textarea>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="ev-date">Date</label>
+                  <input type="date" id="ev-date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ev-time">Time</label>
+                  <input type="time" id="ev-time" class="form-control" required>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="ev-location">Venue / Location</label>
+                  <input type="text" id="ev-location" class="form-control" placeholder="Hub Auditorium" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ev-capacity">Capacity Seats</label>
+                  <input type="number" id="ev-capacity" class="form-control" value="100" min="5" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ev-image">Thumbnail Image URL</label>
+                <input type="url" id="ev-image" class="form-control" placeholder="https://images.unsplash.com/photo-..." required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">Publish Event</button>
+            </form>
+          </div>
+
+          <!-- Right List -->
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Current Event Listings</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Reg Count</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-events-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANAGE GALLERY TAB -->
+      <div id="panel-gallery" class="admin-panel" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start;">
+          <div class="card glass-card">
+            <h3 style="margin-bottom: 1.5rem; color: var(--gold);">Upload Gallery File</h3>
+            <form id="admin-gallery-form" onsubmit="uploadGallerySubmit(event)">
+              <div class="form-group">
+                <label class="form-label" for="gal-url">Image / Video URL</label>
+                <input type="url" id="gal-url" class="form-control" placeholder="https://images.unsplash.com/..." required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="gal-type">Media Type</label>
+                <select id="gal-type" class="form-control" required>
+                  <option value="image" selected>Image</option>
+                  <option value="video">Video</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="gal-cat">Category Classification</label>
+                <select id="gal-cat" class="form-control" required>
+                  <option value="general" selected>General</option>
+                  <option value="education">Education</option>
+                  <option value="sports">Sports</option>
+                  <option value="health">Health Awareness</option>
+                  <option value="food">Food Distribution</option>
+                  <option value="blood">Blood Donation</option>
+                  <option value="environment">Environment</option>
+                  <option value="community">Community Service</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="gal-caption">Caption</label>
+                <input type="text" id="gal-caption" class="form-control" placeholder="Enter short title..." required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">Add to Gallery</button>
+            </form>
+          </div>
+
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Current Gallery Items</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Preview</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Caption</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-gallery-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANAGE NEWS TAB -->
+      <div id="panel-news" class="admin-panel" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start;">
+          <div class="card glass-card">
+            <h3 style="margin-bottom: 1.5rem; color: var(--gold);">Publish Trust Update</h3>
+            <form id="admin-news-form" onsubmit="publishNewsSubmit(event)">
+              <div class="form-group">
+                <label class="form-label" for="news-title">Headline Title</label>
+                <input type="text" id="news-title" class="form-control" placeholder="Enter news headline" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="news-content">Update Content details</label>
+                <textarea id="news-content" class="form-control" placeholder="Enter narrative..." required style="min-height: 120px;"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="news-date">Publish Date</label>
+                <input type="date" id="news-date" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">Publish Update</button>
+            </form>
+          </div>
+
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Published News Bulletins</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Snippet</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-news-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT INQUIRIES TAB -->
+      <div id="panel-contact" class="admin-panel" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Received Contact Inquiries</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Message Content</th>
+              </tr>
+            </thead>
+            <tbody id="admin-contact-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted);">No inquiry submissions found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </section>
+
+  <!-- --- SCRIPTS --- -->
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    let isDemoMode = false;
+    let databaseRecords = {
+      donations: [],
+      members: [],
+      volunteers: [],
+      events: [],
+      gallery: [],
+      news: [],
+      contact: []
+    };
+
+    // Protected Route Verification
+    window.addEventListener("load", async () => {
+      if (typeof supabaseClient !== "undefined" && window.isSupabaseConfigured()) {
+        try {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session || !session.user) {
+            window.location.href = "login.html";
+            return;
+          }
+          
+          // Verify admin role
+          const { data: profile } = await supabaseClient
+            .from('users')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
+          if (!profile || profile.role !== 'admin') {
+            alert("Unauthorized! Administrator access required.");
+            window.location.href = "dashboard.html";
+            return;
+          }
+
+          document.getElementById("demo-badge-container").innerHTML = `<span class="badge badge-success">System Secure</span>`;
+          await fetchAdminData();
+
+        } catch (e) {
+          console.error("Admin authorization failed:", e);
+          window.location.href = "login.html";
+        }
+      } else {
+        // Run in Demo Mode simulation
+        isDemoMode = true;
+        document.getElementById("demo-badge-container").innerHTML = `<span class="badge badge-pending" style="animation: pulse 2s infinite;">Simulation / Demo Mode</span>`;
+        loadMockAdminData();
+      }
+    });
+
+    function switchAdminTab(tabName) {
+      document.querySelectorAll(".admin-panel").forEach(panel => {
+        panel.style.display = "none";
+      });
+      document.querySelectorAll(".dashboard-menu-link").forEach(link => {
+        link.classList.remove("active");
+      });
+
+      const targetPanel = document.getElementById(`panel-${tabName}`);
+      if (targetPanel) targetPanel.style.display = "block";
+
+      const clickedLink = Array.from(document.querySelectorAll(".dashboard-menu-link"))
+        .find(link => link.getAttribute("onclick").includes(`'${tabName}'`));
+      if (clickedLink) clickedLink.classList.add("active");
+    }
+
+    // Load actual database data
+    async function fetchAdminData() {
+      try {
+        // Fetch donations
+        const { data: dons } = await supabaseClient.from('donations').select('*').order('created_at', { ascending: false });
+        databaseRecords.donations = dons || [];
+
+        // Fetch members (both pending and approved)
+        const { data: mems } = await supabaseClient.from('members').select('*').order('created_at', { ascending: false });
+        databaseRecords.members = mems || [];
+
+        // Fetch volunteers
+        const { data: vols } = await supabaseClient.from('volunteers').select('*').order('created_at', { ascending: false });
+        databaseRecords.volunteers = vols || [];
+
+        // Fetch events
+        const { data: evs } = await supabaseClient.from('events').select('*').order('date', { ascending: true });
+        databaseRecords.events = evs || [];
+
+        // Fetch gallery
+        const { data: gals } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
+        databaseRecords.gallery = gals || [];
+
+        // Fetch news
+        const { data: nws } = await supabaseClient.from('news').select('*').order('date', { ascending: false });
+        databaseRecords.news = nws || [];
+
+        // Fetch contact submissions
+        const { data: msgs } = await supabaseClient.from('contact_messages').select('*').order('created_at', { ascending: false });
+        databaseRecords.contact = msgs || [];
+
+        renderAllPanels();
+
+      } catch (err) {
+        showToast("Error loading panel data: " + err.message, "error");
+      }
+    }
+
+    // Render stats and lists
+    function renderAllPanels() {
+      // 1. Overview Statistics
+      const totalDonated = databaseRecords.donations.filter(d => d.status === 'success').reduce((acc, row) => acc + Number(row.amount), 0);
+      const approvedMems = databaseRecords.members.filter(m => m.status === 'approved').length;
+      const approvedVols = databaseRecords.volunteers.filter(v => v.status === 'approved').length;
+      const activeInquiries = databaseRecords.contact.length;
+
+      document.getElementById("stat-total-raised").innerText = `₹${totalDonated.toLocaleString('en-IN')}`;
+      document.getElementById("stat-active-members").innerText = approvedMems;
+      document.getElementById("stat-active-volunteers").innerText = approvedVols;
+      document.getElementById("stat-active-inquiries").innerText = activeInquiries;
+
+      // 2. Donations List
+      const donsTbody = document.getElementById("admin-donations-tbody");
+      if (databaseRecords.donations.length === 0) {
+        donsTbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No donations registered.</td></tr>`;
+      } else {
+        donsTbody.innerHTML = databaseRecords.donations.map(don => `
+          <tr>
+            <td>${new Date(don.created_at || Date.now()).toLocaleDateString('en-IN')}</td>
+            <td><strong>${don.donor_name}</strong></td>
+            <td>${don.donor_email}</td>
+            <td>${don.donor_mobile}</td>
+            <td>${don.donor_pan || '-'}</td>
+            <td style="font-weight:600;" class="text-gold">₹${Number(don.amount).toLocaleString('en-IN')}</td>
+            <td><span class="badge ${don.status === 'success' ? 'badge-success' : 'badge-pending'}">${don.status}</span></td>
+          </tr>
+        `).join("");
+      }
+
+      // 3. Member Approvals List
+      const memsTbody = document.getElementById("admin-members-tbody");
+      const pendingMems = databaseRecords.members.filter(m => m.status === 'pending');
+      if (pendingMems.length === 0) {
+        memsTbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No pending member applications.</td></tr>`;
+      } else {
+        memsTbody.innerHTML = pendingMems.map(mem => `
+          <tr>
+            <td><img class="img-avatar-sm" src="${mem.photo_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100'}" alt="photo"></td>
+            <td><strong>${mem.full_name}</strong></td>
+            <td><span class="badge badge-success">${mem.membership_type}</span></td>
+            <td>${mem.email}</td>
+            <td>${mem.mobile}</td>
+            <td style="font-family:monospace;">${mem.aadhaar}</td>
+            <td style="max-width: 150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${mem.address}</td>
+            <td>
+              <div class="btn-action-group">
+                <button class="btn-action btn-action-approve" onclick="handleMemberStatus('${mem.id}', 'approved')">Approve</button>
+                <button class="btn-action btn-action-reject" onclick="handleMemberStatus('${mem.id}', 'rejected')">Reject</button>
+              </div>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      // 4. Volunteer Approvals List
+      const volsTbody = document.getElementById("admin-volunteers-tbody");
+      const pendingVols = databaseRecords.volunteers.filter(v => v.status === 'pending');
+      if (pendingVols.length === 0) {
+        volsTbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No pending volunteer forms.</td></tr>`;
+      } else {
+        volsTbody.innerHTML = pendingVols.map(vol => `
+          <tr>
+            <td><img class="img-avatar-sm" src="${vol.photo_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100'}" alt="photo"></td>
+            <td><strong>${vol.full_name}</strong></td>
+            <td>${vol.occupation}</td>
+            <td>${vol.skills}</td>
+            <td>${vol.email}</td>
+            <td>${vol.mobile}</td>
+            <td style="font-family:monospace;">${vol.aadhaar}</td>
+            <td>
+              <div class="btn-action-group">
+                <button class="btn-action btn-action-approve" onclick="handleVolunteerStatus('${vol.id}', 'approved')">Approve</button>
+                <button class="btn-action btn-action-reject" onclick="handleVolunteerStatus('${vol.id}', 'rejected')">Reject</button>
+              </div>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      // 5. Events List
+      const evsTbody = document.getElementById("admin-events-tbody");
+      evsTbody.innerHTML = databaseRecords.events.map(ev => `
+        <tr>
+          <td>${ev.date}</td>
+          <td><strong>${ev.title}</strong></td>
+          <td>${ev.location}</td>
+          <td><strong class="text-gold">${ev.registrations_count}</strong> / ${ev.capacity}</td>
+          <td><span class="badge ${ev.status === 'upcoming' ? 'badge-pending' : 'badge-success'}">${ev.status}</span></td>
+        </tr>
+      `).join("");
+
+      // 6. Gallery List
+      const galsTbody = document.getElementById("admin-gallery-tbody");
+      galsTbody.innerHTML = databaseRecords.gallery.map(gal => `
+        <tr>
+          <td><img class="img-avatar-sm" src="${gal.url}" alt="Preview" onerror="this.src='https://unpkg.com/@lucide/lab@1.0.0/icons/play.svg'"></td>
+          <td><span class="badge badge-pending">${gal.type}</span></td>
+          <td>${gal.category}</td>
+          <td>${gal.caption}</td>
+          <td><button class="btn-action btn-action-reject" onclick="deleteGalleryItem('${gal.id}')">Delete</button></td>
+        </tr>
+      `).join("");
+
+      // 7. News List
+      const newsTbody = document.getElementById("admin-news-tbody");
+      newsTbody.innerHTML = databaseRecords.news.map(n => `
+        <tr>
+          <td>${n.date}</td>
+          <td><strong>${n.title}</strong></td>
+          <td style="max-width:200px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${n.content}</td>
+          <td><button class="btn-action btn-action-reject" onclick="deleteNewsItem('${n.id}')">Delete</button></td>
+        </tr>
+      `).join("");
+
+      // 8. Contact Inquiries List
+      const contactTbody = document.getElementById("admin-contact-tbody");
+      if (databaseRecords.contact.length === 0) {
+        contactTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No inquiries submitted.</td></tr>`;
+      } else {
+        contactTbody.innerHTML = databaseRecords.contact.map(msg => `
+          <tr>
+            <td>${new Date(msg.created_at).toLocaleDateString('en-IN')}</td>
+            <td><strong>${msg.name}</strong></td>
+            <td><a href="mailto:${msg.email}">${msg.email}</a></td>
+            <td>${msg.phone}</td>
+            <td style="color:var(--text-secondary); max-width:300px; word-wrap:break-word;">${msg.message}</td>
+          </tr>
+        `).join("");
+      }
+
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    // Status updates: Member
+    async function handleMemberStatus(id, newStatus) {
+      if (isDemoMode) {
+        const item = databaseRecords.members.find(m => m.id === id);
+        if (item) item.status = newStatus;
+        showToast(`Member application status updated to: ${newStatus} (Demo)`, "success");
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('members')
+          .update({ status: newStatus })
+          .eq('id', id);
+
+        if (error) {
+          showToast(error.message, "error");
+        } else {
+          showToast(`Application successfully ${newStatus}!`, "success");
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Status updates: Volunteer
+    async function handleVolunteerStatus(id, newStatus) {
+      if (isDemoMode) {
+        const item = databaseRecords.volunteers.find(v => v.id === id);
+        if (item) item.status = newStatus;
+        showToast(`Volunteer status updated to: ${newStatus} (Demo)`, "success");
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('volunteers')
+          .update({ status: newStatus })
+          .eq('id', id);
+
+        if (error) {
+          showToast(error.message, "error");
+        } else {
+          showToast(`Application successfully ${newStatus}!`, "success");
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Submit new event
+    async function createEventSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById("ev-title").value;
+      const description = document.getElementById("ev-description").value;
+      const date = document.getElementById("ev-date").value;
+      const time = document.getElementById("ev-time").value;
+      const location = document.getElementById("ev-location").value;
+      const capacity = document.getElementById("ev-capacity").value;
+      const image_url = document.getElementById("ev-image").value;
+
+      if (isDemoMode) {
+        databaseRecords.events.push({
+          date, title, location, capacity, registrations_count: 0, status: "upcoming"
+        });
+        showToast("New Event published successfully (Demo Mode)!", "success");
+        document.getElementById("admin-create-event-form").reset();
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('events')
+          .insert({
+            title, description, date, time, location, capacity, image_url, status: 'upcoming'
+          });
+
+        if (error) {
+          showToast(error.message, "error");
+        } else {
+          showToast("New program published successfully!", "success");
+          document.getElementById("admin-create-event-form").reset();
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Submit new gallery file
+    async function uploadGallerySubmit(e) {
+      e.preventDefault();
+      const url = document.getElementById("gal-url").value;
+      const type = document.getElementById("gal-type").value;
+      const category = document.getElementById("gal-cat").value;
+      const caption = document.getElementById("gal-caption").value;
+
+      if (isDemoMode) {
+        databaseRecords.gallery.push({ id: `gal_${Date.now()}`, url, type, category, caption });
+        showToast("Media added to gallery (Demo)!", "success");
+        document.getElementById("admin-gallery-form").reset();
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('gallery')
+          .insert({ url, type, category, caption });
+
+        if (error) {
+          showToast(error.message, "error");
+        } else {
+          showToast("Media item loaded successfully!", "success");
+          document.getElementById("admin-gallery-form").reset();
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Delete gallery item
+    async function deleteGalleryItem(id) {
+      if (isDemoMode) {
+        databaseRecords.gallery = databaseRecords.gallery.filter(g => g.id !== id);
+        showToast("Media deleted (Demo)!", "success");
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient.from('gallery').delete().eq('id', id);
+        if (error) showToast(error.message, "error");
+        else {
+          showToast("Media deleted from system.", "success");
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Publish news story
+    async function publishNewsSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById("news-title").value;
+      const content = document.getElementById("news-content").value;
+      const date = document.getElementById("news-date").value;
+
+      if (isDemoMode) {
+        databaseRecords.news.push({ id: `nws_${Date.now()}`, title, content, date });
+        showToast("News bulletin published (Demo)!", "success");
+        document.getElementById("admin-news-form").reset();
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('news')
+          .insert({ title, content, date });
+
+        if (error) {
+          showToast(error.message, "error");
+        } else {
+          showToast("News bulletin dispatched successfully!", "success");
+          document.getElementById("admin-news-form").reset();
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Delete news story
+    async function deleteNewsItem(id) {
+      if (isDemoMode) {
+        databaseRecords.news = databaseRecords.news.filter(n => n.id !== id);
+        showToast("Update deleted (Demo)!", "success");
+        renderAllPanels();
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient.from('news').delete().eq('id', id);
+        if (error) showToast(error.message, "error");
+        else {
+          showToast("News bulletin deleted from system.", "success");
+          await fetchAdminData();
+        }
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Mock Admin Fallback loader
+    function loadMockAdminData() {
+      databaseRecords.donations = [
+        { id: "d1", created_at: new Date().toISOString(), donor_name: "Ramesh Nair", donor_email: "ramesh@gmail.com", donor_mobile: "9102930219", donor_pan: "AMNPT1024L", amount: 5001, status: "success" },
+        { id: "d2", created_at: new Date().toISOString(), donor_name: "Rita Deshmukh", donor_email: "rita@gmail.com", donor_mobile: "8910293021", donor_pan: null, amount: 1001, status: "success" }
+      ];
+      databaseRecords.members = [
+        { id: "m1", created_at: new Date().toISOString(), photo_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100", full_name: "Rita Deshmukh", membership_type: "Annual", email: "rita@gmail.com", mobile: "8910293021", aadhaar: "482910392019", address: "Sector 12, Flat 104, Noida", status: "pending" }
+      ];
+      databaseRecords.volunteers = [
+        { id: "v1", created_at: new Date().toISOString(), photo_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100", full_name: "Saurav Joshi", occupation: "Software Engineer", skills: "First-aid, Event Coordination", email: "saurav@gmail.com", mobile: "9832104921", aadhaar: "839019283019", status: "pending" }
+      ];
+      databaseRecords.events = [
+        { id: "e1", date: "2026-07-12", title: "Monsoon Blood Donation Camp", location: "KGF Central Hub Hall", registrations_count: 85, capacity: 150, status: "upcoming" }
+      ];
+      databaseRecords.gallery = [
+        { id: "g1", url: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=100", type: "image", category: "food", caption: "Meal distribution camp" }
+      ];
+      databaseRecords.news = [
+        { id: "n1", date: "2026-06-25", title: "Annual Health Checkup Drive Announced", content: "Free diagnostic camp next Sunday..." }
+      ];
+      databaseRecords.contact = [
+        { id: "c1", created_at: new Date().toISOString(), name: "Nitin Saxena", email: "nitin@gmail.com", phone: "9812304920", message: "Inquiry about corporate CSR partnership policies." }
+      ];
+
+      renderAllPanels();
+    }
+  </script>
+</body>
+</html>
