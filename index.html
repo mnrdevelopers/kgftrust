@@ -51,7 +51,7 @@
   <!-- --- HERO SECTION --- -->
   <section class="hero-section">
     <!-- Custom Premium Gold/Black Hero Background -->
-    <div class="hero-bg" style="background-image: url('images/hero_bg.png');"></div>
+    <div class="hero-bg" style="background-image: url('images/hero_bg.jpg');"></div>
     <div class="container hero-content">
       <img src="images/logo.png" class="hero-logo" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); display: block; margin: 0 auto 1.5rem auto; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));">
       <h1 class="hero-title"><span class="gradient-text">Kalki Grit Force</span><br>Trust</h1>
@@ -137,22 +137,30 @@
       <h2 class="section-title text-center">Trust Footprint</h2>
       <p class="subtitle text-center">Real-time statistics demonstrating our collective reach and resources.</p>
       
-      <div class="stats-grid">
+      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
         <div class="stat-item">
-          <div class="stat-number" id="stat-donations">₹1.2M+</div>
-          <div class="stat-label">Donations Raised</div>
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">People Helped</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" id="stat-members">350+</div>
-          <div class="stat-label">Active Members</div>
+          <div class="stat-number">5K+</div>
+          <div class="stat-label">Children Supported</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" id="stat-volunteers">1,200+</div>
-          <div class="stat-label">Volunteers Registered</div>
+          <div class="stat-number">25K+</div>
+          <div class="stat-label">Food Distributed</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" id="stat-events">45+</div>
-          <div class="stat-label">Events Completed</div>
+          <div class="stat-number">3K+</div>
+          <div class="stat-label">Trees Planted</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Medical Camps</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">300+</div>
+          <div class="stat-label">Blood Donations</div>
         </div>
       </div>
     </div>
@@ -384,16 +392,22 @@
             .from('events')
             .select('*', { count: 'exact', head: true });
 
-          // Update DOM
-          if (membersCount !== null) document.getElementById("stat-members").innerText = `${350 + membersCount}+`;
-          if (volunteersCount !== null) document.getElementById("stat-volunteers").innerText = `${1200 + volunteersCount}+`;
-          if (eventsCount !== null) document.getElementById("stat-events").innerText = `${45 + eventsCount}+`;
+          // Update DOM if elements exist
+          const elMembers = document.getElementById("stat-members");
+          const elVolunteers = document.getElementById("stat-volunteers");
+          const elEvents = document.getElementById("stat-events");
+          const elDonations = document.getElementById("stat-donations");
+
+          if (elMembers && membersCount !== null) elMembers.innerText = `${350 + membersCount}+`;
+          if (elVolunteers && volunteersCount !== null) elVolunteers.innerText = `${1200 + volunteersCount}+`;
+          if (elEvents && eventsCount !== null) elEvents.innerText = `${45 + eventsCount}+`;
           
-          // Format donation amount in INR (e.g. ₹1.2M+ or ₹12Lakhs+)
-          if (donationsSum > 100000) {
-            document.getElementById("stat-donations").innerText = `₹${(donationsSum / 100000).toFixed(1)}L+`;
-          } else {
-            document.getElementById("stat-donations").innerText = `₹${(donationsSum / 1000).toFixed(0)}k+`;
+          if (elDonations) {
+            if (donationsSum > 100000) {
+              elDonations.innerText = `₹${(donationsSum / 100000).toFixed(1)}L+`;
+            } else {
+              elDonations.innerText = `₹${(donationsSum / 1000).toFixed(0)}k+`;
+            }
           }
         } catch (error) {
           console.log("Error loading real-time stats, using static values:", error);
