@@ -50,19 +50,33 @@
 
   <!-- --- HERO SECTION --- -->
   <section class="hero-section">
-    <!-- Ambient blurred background glow -->
-    <div class="hero-ambient-bg" style="background-image: url('images/hero_bg.jpg');"></div>
-    <!-- Sharp fully displayed hero background -->
-    <div class="hero-bg" style="background-image: url('images/hero_bg.jpg');"></div>
+    <!-- Ambient background glow behind the entire section -->
+    <div class="hero-ambient-glow"></div>
     
-    <div class="container hero-content">
-      <img src="images/logo.png" class="hero-logo" alt="KGF Trust Logo">
-      <h1 class="hero-title"><span class="gradient-text">Kalki Grit Force</span><br>Trust</h1>
-      <p class="hero-slogan">Truth in Action, Strength in Leadership</p>
-      <div class="hero-btns">
-        <a href="donate.html" class="btn btn-primary"><i data-lucide="heart"></i> Donate Now</a>
-        <a href="volunteer.html" class="btn btn-secondary"><i data-lucide="users"></i> Join as Volunteer</a>
-        <a href="membership.html" class="btn btn-outline"><i data-lucide="award"></i> Become Member</a>
+    <div class="container hero-container">
+      <!-- Left Column: Branding & Actions -->
+      <div class="hero-left">
+        <div class="hero-brand-header">
+          <img src="images/logo.png" class="hero-mini-logo" alt="KGF Trust Logo">
+          <div class="hero-brand-name">KGF Trust</div>
+        </div>
+        <h1 class="hero-title"><span class="gradient-text">Kalki Grit Force</span><br>Trust</h1>
+        <p class="hero-slogan">Truth in Action, Strength in Leadership</p>
+        <div class="hero-btns">
+          <a href="donate.html" class="btn btn-primary"><i data-lucide="heart"></i> Donate Now</a>
+          <a href="volunteer.html" class="btn btn-secondary"><i data-lucide="users"></i> Join as Volunteer</a>
+          <a href="membership.html" class="btn btn-outline"><i data-lucide="award"></i> Become Member</a>
+        </div>
+      </div>
+      
+      <!-- Right Column: Framed Banner Image -->
+      <div class="hero-right">
+        <div class="hero-image-card-wrapper">
+          <div class="hero-image-ambient" style="background-image: url('images/hero_bg.jpg');"></div>
+          <div class="hero-image-card">
+            <img src="images/hero_bg.jpg" alt="Kalki Grit Force Trust Banner" class="hero-img">
+          </div>
+        </div>
       </div>
     </div>
   </section>
