@@ -436,31 +436,60 @@ header.scrolled {
 /* --- HERO SECTION --- */
 .hero-section {
   position: relative;
+  min-height: 85vh;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #000;
-  padding-top: 80px;
-  overflow: hidden;
+  padding: 120px 1.5rem 4rem 1.5rem;
   text-align: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.hero-ambient-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px) brightness(0.3);
+  opacity: 0.8;
+  transform: scale(1.15); /* avoid blur bleed border */
+  pointer-events: none;
 }
 
 .hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background-size: cover;
+  height: 100%;
+  z-index: 2;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  filter: brightness(0.9);
+  filter: brightness(0.85);
+  pointer-events: none;
   transition: var(--transition-smooth);
-  border-bottom: 1px solid var(--border-color);
 }
 
 .hero-content {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
+  position: relative;
   z-index: 10;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.05);
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInUp 1s forwards ease-out 0.2s;
@@ -472,20 +501,23 @@ header.scrolled {
   height: 110px;
   margin: 0 auto 1.25rem auto;
   filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  object-fit: cover;
 }
 
 .hero-title {
-  font-size: clamp(2.3rem, 5.5vw, 4.2rem);
+  font-size: clamp(2rem, 5vw, 3.8rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   line-height: 1.1;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
 }
 
 .hero-slogan {
-  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem);
   color: var(--gold-light);
   font-weight: 500;
   letter-spacing: 0.15em;
@@ -504,36 +536,12 @@ header.scrolled {
 @media (min-width: 992px) {
   .hero-section {
     min-height: 90vh;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding-top: 80px;
-    background: radial-gradient(circle at center, rgba(15,15,15,0.4) 0%, rgba(5,5,5,0.95) 100%);
-  }
-
-  .hero-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;
-    z-index: 1;
-    filter: brightness(0.7);
-    border-bottom: none;
+    padding-top: 100px;
   }
 
   .hero-content {
-    position: relative;
-    z-index: 10;
     max-width: 780px;
     padding: 3.5rem;
-    background: rgba(10, 10, 10, 0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    border-radius: 20px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.05);
   }
 }
 
